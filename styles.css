@@ -1403,3 +1403,32 @@ body.entered .spy { opacity: 1; }
 @media (max-width: 380px) {
   .countdown-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
 }
+
+/* ============================================================
+   HERO FULL-BLEED + SAFE-AREA FIX (iPhone notch / edge gaps)
+   ============================================================ */
+html, body { margin: 0; padding: 0; }
+.site { margin: 0; }
+
+/* fill the whole screen including under the notch */
+.hero { min-height: 100svh; }
+@supports (height: 100dvh) {
+  .hero { min-height: 100dvh; }
+}
+
+@media (max-width: 720px) {
+  /* breathing room on the sides so text never clips, respecting the notch */
+  .hero-content {
+    box-sizing: border-box;
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+  }
+  /* the invite line was too widely tracked and clipped at the edges */
+  .eyebrow {
+    letter-spacing: 0.16em;
+    font-size: 0.6rem;
+    line-height: 1.5;
+  }
+  /* keep the scroll cue above the home indicator */
+  .hero-scroll { bottom: max(70px, calc(env(safe-area-inset-bottom) + 56px)); }
+}
