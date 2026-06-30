@@ -1432,3 +1432,6 @@ html, body { margin: 0; padding: 0; }
   /* keep the scroll cue above the home indicator */
   .hero-scroll { bottom: max(70px, calc(env(safe-area-inset-bottom) + 56px)); }
 }
+
+/* insurance: if any edge sliver shows, it reads as the photo's dark tone, never cream */
+.hero { background-color: #241b14; }
