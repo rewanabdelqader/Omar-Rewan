@@ -1309,3 +1309,91 @@ body.entered .spy { opacity: 1; }
   .opening { transition: opacity 0.4s ease !important; }
   html { scroll-behavior: auto; }
 }
+
+/* ============================================================
+   COMPACT + MOBILE LAYER (added last so it wins the cascade)
+   Goal: short, tidy, great on phones — few scrolls.
+   ============================================================ */
+
+/* inline "save the date" row inside details */
+.calendar-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+.calendar-inline-label {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 2px;
+  font-size: 0.7rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--toffee);
+}
+.cal-btn {
+  border: 1px solid rgba(82, 60, 45, 0.18);
+  border-radius: 999px;
+  padding: 9px 22px;
+  font-size: 0.84rem;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(8px);
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+.cal-btn:hover {
+  transform: translateY(-2px);
+  background: #fff;
+  box-shadow: 0 12px 24px rgba(124, 93, 70, 0.14);
+}
+.venue-cta { text-align: center; margin: 22px 0 4px; }
+
+/* compact, equal-height photos */
+.venue-photo, .kids-photo {
+  min-height: 0;
+  aspect-ratio: 1 / 1;
+  border-radius: 18px;
+}
+.kids-gallery {
+  grid-template-columns: 1fr 1fr;
+  max-width: 620px;
+  margin: 6px auto 0;
+}
+
+/* ---------- phones ---------- */
+@media (max-width: 720px) {
+  .section { padding: 46px 16px; }
+  .section-header { margin-bottom: 26px; }
+  .section-title { font-size: clamp(1.9rem, 8vw, 2.5rem); }
+  .section-lead { font-size: 1rem; line-height: 1.7; margin-top: 14px; }
+
+  .hero-content { padding-bottom: 78px; }
+  .hero-title { font-size: clamp(3.2rem, 17vw, 5rem); }
+
+  /* keep grids tight instead of one tall column */
+  .countdown-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .countdown-card { padding: 14px 6px; }
+  .countdown-value { font-size: 1.7rem; }
+  .countdown-label { font-size: 0.6rem; letter-spacing: 0.12em; }
+
+  .details-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .detail-card { padding: 18px 16px; }
+
+  .palette-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .palette-card { flex-direction: column; text-align: center; font-size: 0.72rem; gap: 8px; }
+
+  .venue-gallery { grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 22px; }
+  .kids-gallery { gap: 10px; }
+
+  .field-grid { grid-template-columns: 1fr; }
+
+  /* sensible media heights on small screens */
+  .venue-map, .venue-map iframe { min-height: 300px; }
+}
+
+/* very small phones: 2-up countdown reads better than 4 cramped */
+@media (max-width: 380px) {
+  .countdown-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+}

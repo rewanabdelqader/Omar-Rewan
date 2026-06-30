@@ -11,7 +11,7 @@ const weddingConfig = {
   venueAddress: 'Swiss Club Cairo, Cairo, Egypt',
   venueMapsUrl: 'https://maps.app.goo.gl/iwaNAY48Krx1mPwG9?g_st=ic',
   // Paste a free Google Apps Script web-app URL here to save RSVPs directly into Google Sheets.
-  rsvpEndpoint: '',
+  rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbyzceubK37TDNa0K3uyqr9bHAb6DfD_noG1GxkT87IvKPUmIUvzAKuVoGYNaqEc1D4BiA/exec',
   rsvpStorageKey: 'omar_rewan_rsvps',
 };
 
@@ -79,8 +79,10 @@ function toIcsStamp(date) {
 function initStaticContent() {
   // #coupleNames is now a styled heading with its own markup — leave its DOM alone.
   $('#weddingDateLabel').textContent = weddingConfig.weddingDateText;
-  $('#eventDateCard').textContent = '8.8.2026';
-  $('#venueCard').textContent = weddingConfig.venueName;
+  const eventDateCard = $('#eventDateCard');
+  if (eventDateCard) eventDateCard.textContent = '8.8.2026';
+  const venueCard = $('#venueCard');
+  if (venueCard) venueCard.textContent = weddingConfig.venueName;
   $('#footerDate').textContent = '8.8.2026';
 
   const googleLink = $('#googleCalendarLink');
@@ -224,7 +226,6 @@ function buildRsvpPayload(form) {
     attendance,
     bringingChildren: $('#bringingChildren', form).value,
     childrenCount: Number($('#childrenCount', form).value || 0),
-    dietaryRestrictions: $('#dietary', form).value.trim(),
     specialNotes: $('#specialNotes', form).value.trim(),
     createdAt: new Date().toISOString(),
   };
@@ -233,17 +234,17 @@ function buildRsvpPayload(form) {
 async function submitRsvpToEndpoint(payload) {
   if (!weddingConfig.rsvpEndpoint) return { skipped: true };
 
-  const response = await fetch(weddingConfig.rsvpEndpoint, {
+  // Google Apps Script web apps don't return CORS headers, so we send a
+  // "simple" request (text/plain, no-cors). The row still lands in the sheet;
+  // the response is opaque, which is fine — we also keep a local backup.
+  await fetch(weddingConfig.rsvpEndpoint, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(payload),
   });
 
-  if (!response.ok) {
-    throw new Error(`RSVP endpoint returned ${response.status}`);
-  }
-
-  return response;
+  return { ok: true };
 }
 
 function initRsvpForm() {
@@ -289,7 +290,7 @@ function initRsvpForm() {
 
     try {
       await submitRsvpToEndpoint(payload);
-      status.textContent = 'Your RSVP has been saved.';
+      status.textContent = "Got it — thank you! We can't wait to see you 🤍";
       status.style.color = '#667c62';
       form.reset();
       $('#guestCount', form).value = '1';
@@ -297,8 +298,8 @@ function initRsvpForm() {
       syncChildrenCountState();
     } catch (error) {
       console.warn('RSVP endpoint unavailable, stored locally instead.', error);
-      status.textContent = 'Saved locally for now. Add a Google Sheets webhook to send responses online.';
-      status.style.color = '#8f6650';
+      status.textContent = "Saved! If you don't hear from us, just message us directly too.";
+      status.style.color = '#667c62';
       form.reset();
       $('#guestCount', form).value = '1';
       $('input[name="attendance"][value="Attending"]', form).checked = true;
