@@ -238,8 +238,9 @@ button {
 }
 
 .hero-media img {
-  filter: saturate(0.88) contrast(0.95) brightness(0.84);
+  filter: saturate(0.95) contrast(0.98) brightness(0.95);
   transform: scale(1.04);
+  object-position: center 38%;
 }
 
 .hero-overlay {
@@ -247,8 +248,8 @@ button {
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(180deg, rgba(247, 239, 229, 0.26) 0%, rgba(34, 22, 14, 0.42) 100%),
-    radial-gradient(circle at center, rgba(255, 248, 243, 0.2), transparent 42%);
+    linear-gradient(180deg, rgba(26, 18, 12, 0.32) 0%, rgba(26, 18, 12, 0.12) 34%, rgba(26, 18, 12, 0.40) 100%),
+    radial-gradient(125% 78% at 50% 46%, rgba(26, 18, 12, 0.22), transparent 72%);
 }
 
 .hero-content {
@@ -269,7 +270,7 @@ button {
 .hero-title {
   margin: 0;
   font-family: var(--serif);
-  font-size: clamp(3.7rem, 11vw, 8.8rem);
+  font-size: clamp(3rem, 9vw, 6.2rem);
   font-weight: 500;
   line-height: 0.95;
   letter-spacing: 0.02em;
@@ -1134,16 +1135,21 @@ body.is-dusk .garden-lights { opacity: 1; }
 /* --- hero: ampersand motif + scroll cue --- */
 .hero-title {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 0.04em 0.22em;
+  gap: 0.02em;
+  line-height: 0.96;
 }
+.hero-name { display: block; }
 .hero-amp {
+  display: block;
   font-style: italic;
-  font-size: 0.86em;
+  font-size: 0.46em;
   color: #f1d8b3;
   font-weight: 400;
+  margin: 0.08em 0;
+  line-height: 1;
 }
 .hero-scroll {
   position: absolute;
@@ -1370,7 +1376,7 @@ body.entered .spy { opacity: 1; }
   .section-lead { font-size: 1rem; line-height: 1.7; margin-top: 14px; }
 
   .hero-content { padding-bottom: 78px; }
-  .hero-title { font-size: clamp(3.2rem, 17vw, 5rem); }
+  .hero-title { font-size: clamp(2.8rem, 14vw, 4.4rem); }
 
   /* keep grids tight instead of one tall column */
   .countdown-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
