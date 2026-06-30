@@ -2,15 +2,15 @@
 
 const weddingConfig = {
   coupleNames: 'Omar & Rewan',
-  weddingDateText: '8.8.2026',
-  start: new Date('2026-08-08T18:00:00+03:00'),
-  end: new Date('2026-08-08T22:00:00+03:00'),
-  startLocal: '20260808T180000',
-  endLocal: '20260808T220000',
+  weddingDateText: '08 · 08 · 2026',
+  start: new Date('2026-08-08T19:00:00+03:00'),
+  end: new Date('2026-08-08T23:00:00+03:00'),
+  startLocal: '20260808T190000',
+  endLocal: '20260808T230000',
   venueName: 'Swiss Club Cairo',
   venueAddress: 'Swiss Club Cairo, Cairo, Egypt',
   venueMapsUrl: 'https://maps.app.goo.gl/iwaNAY48Krx1mPwG9?g_st=ic',
-  // Paste a free Google Apps Script web-app URL here to save RSVPs directly into Google Sheets.
+  // Google Apps Script web-app URL that saves RSVPs into your Google Sheet.
   rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbyzceubK37TDNa0K3uyqr9bHAb6DfD_noG1GxkT87IvKPUmIUvzAKuVoGYNaqEc1D4BiA/exec',
   rsvpStorageKey: 'omar_rewan_rsvps',
 };
@@ -83,7 +83,8 @@ function initStaticContent() {
   if (eventDateCard) eventDateCard.textContent = '8.8.2026';
   const venueCard = $('#venueCard');
   if (venueCard) venueCard.textContent = weddingConfig.venueName;
-  $('#footerDate').textContent = '8.8.2026';
+  const footerDate = $('#footerDate');
+  if (footerDate) footerDate.textContent = '08 · 08 · 2026';
 
   const googleLink = $('#googleCalendarLink');
   if (googleLink) {
@@ -290,7 +291,7 @@ function initRsvpForm() {
 
     try {
       await submitRsvpToEndpoint(payload);
-      status.textContent = "Got it — thank you! We can't wait to see you 🤍";
+      status.textContent = 'Your place has been reserved. We cannot wait to celebrate with you — Omar & Rewan';
       status.style.color = '#667c62';
       form.reset();
       $('#guestCount', form).value = '1';
@@ -298,7 +299,7 @@ function initRsvpForm() {
       syncChildrenCountState();
     } catch (error) {
       console.warn('RSVP endpoint unavailable, stored locally instead.', error);
-      status.textContent = "Saved! If you don't hear from us, just message us directly too.";
+      status.textContent = "Your place has been reserved. If you don't hear back, feel free to message us directly too.";
       status.style.color = '#667c62';
       form.reset();
       $('#guestCount', form).value = '1';
@@ -453,6 +454,36 @@ function initMicroInteractions() {
   });
 }
 
+// --- Optional ambient music (off by default, user-activated) -----------------
+function initMusic() {
+  const btn = $('#musicToggle');
+  const audio = $('#bgMusic');
+  if (!btn || !audio) return;
+
+  // Only reveal the control if a music file actually exists.
+  fetch('Media/music.mp3', { method: 'HEAD' })
+    .then((r) => { if (r.ok) btn.hidden = false; })
+    .catch(() => {});
+
+  let playing = false;
+  btn.addEventListener('click', () => {
+    if (playing) {
+      audio.pause();
+      btn.classList.remove('is-playing');
+      btn.setAttribute('aria-label', 'Play music');
+      playing = false;
+    } else {
+      audio.play()
+        .then(() => {
+          playing = true;
+          btn.classList.add('is-playing');
+          btn.setAttribute('aria-label', 'Pause music');
+        })
+        .catch(() => {});
+    }
+  });
+}
+
 function init() {
   initStaticContent();
   createPetals();
@@ -464,6 +495,7 @@ function init() {
   initScrollSpy();
   initLightbox();
   initMicroInteractions();
+  initMusic();
 }
 
 document.addEventListener('DOMContentLoaded', init);

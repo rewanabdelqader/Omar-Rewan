@@ -1,19 +1,20 @@
 :root {
-  --ivory: #f7efe5;
-  --warm-white: #fcf7f1;
-  --champagne: #e4cfb7;
+  --ivory: #f8f5ef;
+  --warm-white: #f8f5ef;
+  --champagne: #d6b27c;
   --blush: #ddc0bb;
-  --toffee: #c7ab8f;
+  --toffee: #b89f88;
+  --stone: #cbb8a2;
   --dusty-rose: #d6b5b6;
-  --olive: #98a88d;
-  --emerald: #667c62;
+  --olive: #7a8163;
+  --emerald: #6a7860;
   --navy: #2f3b54;
-  --ink: #2e2622;
-  --muted: #6f6259;
-  --line: rgba(82, 60, 45, 0.12);
-  --card: rgba(255, 255, 255, 0.68);
-  --card-strong: rgba(255, 255, 255, 0.86);
-  --shadow: 0 24px 60px rgba(82, 60, 45, 0.12);
+  --ink: #2b2320;
+  --muted: #6f6357;
+  --line: rgba(43, 35, 32, 0.12);
+  --card: rgba(255, 255, 255, 0.55);
+  --card-strong: rgba(255, 255, 255, 0.82);
+  --shadow: 0 24px 60px rgba(70, 52, 38, 0.12);
   --serif: "Cormorant Garamond", "Playfair Display", Georgia, serif;
   --sans: "Inter", Arial, sans-serif;
 }
@@ -33,9 +34,9 @@ body {
   font-family: var(--sans);
   color: var(--ink);
   background:
-    radial-gradient(circle at top left, rgba(214, 181, 182, 0.22), transparent 34%),
-    radial-gradient(circle at top right, rgba(228, 207, 183, 0.16), transparent 28%),
-    linear-gradient(180deg, #fffaf5 0%, #f9f2ea 48%, #f4ede4 100%);
+    radial-gradient(circle at top left, rgba(184, 159, 136, 0.18), transparent 36%),
+    radial-gradient(circle at top right, rgba(214, 178, 124, 0.12), transparent 30%),
+    linear-gradient(180deg, #f8f5ef 0%, #f5f0e8 50%, #f1ebe1 100%);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -157,11 +158,11 @@ button {
   padding: 14px 24px;
   border-radius: 999px;
   border: 1px solid transparent;
-  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.5s ease;
 }
 
 .button:hover {
-  transform: translateY(-1px);
+  transform: translateY(-3px);
 }
 
 .button-solid {
@@ -238,9 +239,15 @@ button {
 }
 
 .hero-media img {
-  filter: saturate(0.95) contrast(0.98) brightness(0.95);
-  transform: scale(1.04);
-  object-position: center 38%;
+  filter: saturate(0.95) contrast(0.98) brightness(0.9);
+  object-position: center 42%;
+  transform: scale(1.06);
+  animation: kenburns 26s ease-in-out infinite alternate;
+}
+
+@keyframes kenburns {
+  from { transform: scale(1.06) translate(0, 0); }
+  to   { transform: scale(1.16) translate(-1.5%, -2%); }
 }
 
 .hero-overlay {
@@ -1435,3 +1442,154 @@ html, body { margin: 0; padding: 0; }
 
 /* insurance: if any edge sliver shows, it reads as the photo's dark tone, never cream */
 .hero { background-color: #241b14; }
+
+/* ============================================================
+   EDITORIAL LUXURY LAYER (final) — added last, wins cascade
+   ============================================================ */
+
+/* warmer solid button */
+.button-solid {
+  background: linear-gradient(135deg, #dcc08c, #c79a5c);
+  color: #fffaf0;
+  box-shadow: 0 18px 36px rgba(120, 86, 42, 0.18);
+}
+
+/* subtle glass on cards */
+.countdown-card, .detail-card, .calendar-card, .palette-card,
+.venue-note, .kids-card, .invite-card, .rsvp-form {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* ---------- opening: night villa, slow zoom, refined copy ---------- */
+.opening { background: #181210; }
+.opening-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background: url("Media/2.jpeg") center / cover no-repeat;
+  transform: scale(1.14);
+  animation: openingZoom 14s ease-out forwards;
+}
+@keyframes openingZoom { from { transform: scale(1.16); } to { transform: scale(1.03); } }
+.opening-scrim {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, rgba(20, 14, 10, 0.55) 0%, rgba(20, 14, 10, 0.72) 100%);
+}
+.opening-inner { position: relative; z-index: 2; color: #f6efe2; animation: floatUp 1.1s ease both; }
+.opening-monogram { color: #f6efe2; }
+.opening-monogram em { color: #e7c79a; }
+.opening-names {
+  color: #f6efe2; margin: 14px 0 22px;
+  font-size: 0.82rem; letter-spacing: 0.36em; text-transform: uppercase;
+}
+.opening-lines {
+  font-family: var(--serif); font-style: italic;
+  font-size: clamp(1.05rem, 2.4vw, 1.35rem); line-height: 1.7;
+  color: rgba(246, 239, 226, 0.92); max-width: 30ch; margin: 0 auto 22px;
+}
+.opening-meta {
+  font-size: 0.86rem; letter-spacing: 0.28em; color: rgba(246, 239, 226, 0.9);
+  line-height: 2; margin: 0 0 30px;
+}
+.opening-meta span { font-size: 0.74rem; letter-spacing: 0.2em; color: rgba(246, 239, 226, 0.7); }
+.opening-btn {
+  border-color: rgba(246, 239, 226, 0.55);
+  background: rgba(246, 239, 226, 0.08);
+  color: #f6efe2;
+  box-shadow: none;
+}
+.opening-btn:hover { background: rgba(246, 239, 226, 0.18); }
+
+/* ---------- countdown (three cards) ---------- */
+.countdown-three { grid-template-columns: repeat(3, 1fr); max-width: 600px; margin-inline: auto; }
+
+/* ---------- invite card ---------- */
+.invite-card {
+  max-width: 470px; margin: 0 auto; text-align: center;
+  padding: 42px 34px; border-radius: 22px;
+  background: var(--card-strong); border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.invite-day {
+  margin: 0; font-family: var(--serif); font-size: 1.1rem;
+  letter-spacing: 0.34em; text-transform: uppercase; color: var(--toffee);
+}
+.invite-date { margin: 8px 0 0; font-family: var(--serif); font-size: clamp(2rem, 5vw, 2.6rem); color: var(--ink); }
+.invite-line { width: 56px; height: 1px; background: var(--champagne); margin: 22px auto; }
+.invite-rows { margin: 0; display: grid; gap: 0; }
+.invite-rows > div {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 18px;
+  padding: 12px 0; border-bottom: 1px dashed var(--line);
+}
+.invite-rows > div:last-child { border-bottom: 0; }
+.invite-rows dt { margin: 0; color: var(--muted); font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase; }
+.invite-rows dd { margin: 0; font-family: var(--serif); font-size: 1.2rem; color: var(--ink); }
+.invite-actions { margin: 26px 0 6px; }
+.invite-card .calendar-inline { margin-top: 18px; }
+
+/* ---------- venue: poem + cinematic horizontal gallery ---------- */
+.venue-poem { font-family: var(--serif); font-style: normal; }
+.venue-poem em { color: var(--toffee); }
+.venue-gallery {
+  display: grid; grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 42%;
+  gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding: 6px 2px 14px; margin-top: 26px;
+  scrollbar-width: thin;
+}
+.venue-gallery::-webkit-scrollbar { height: 6px; }
+.venue-gallery::-webkit-scrollbar-thumb { background: rgba(43, 35, 32, 0.18); border-radius: 999px; }
+.venue-photo {
+  scroll-snap-align: center; aspect-ratio: 4 / 3; min-height: 0;
+  border-radius: 18px; overflow: hidden; box-shadow: var(--shadow);
+}
+.venue-map { margin-top: 24px; }
+
+/* ---------- color story: swatches grow on hover ---------- */
+.palette-card span { transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+.palette-card:hover span { transform: scale(1.3); }
+.dress-note p { line-height: 1.85; }
+.dress-note-thanks { color: var(--toffee); font-family: var(--serif); font-style: italic; font-size: 1.05rem; }
+
+/* ---------- little guests: sepia, color on hover, label ---------- */
+.kids-sepia .kids-photo { position: relative; }
+.kids-sepia img {
+  filter: sepia(0.55) saturate(0.8) contrast(0.96) brightness(0.98);
+  transition: filter 0.7s ease, transform 7s ease;
+}
+.kids-sepia .kids-photo:hover img { filter: sepia(0.15) saturate(1); }
+.kids-photo figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 14px; text-align: center;
+  font-size: 0.66rem; letter-spacing: 0.24em; text-transform: uppercase;
+  color: #f6efe2;
+  background: linear-gradient(0deg, rgba(20, 14, 10, 0.55), transparent);
+}
+
+/* ---------- closing ---------- */
+.section-closing { text-align: center; }
+.closing-inner { max-width: 640px; margin: 0 auto; }
+.closing-text {
+  font-family: var(--serif); font-style: italic;
+  font-size: clamp(1.3rem, 3.2vw, 1.85rem); line-height: 1.7;
+  color: var(--ink); margin: 16px auto;
+}
+.closing-text-soft { color: var(--muted); }
+.closing-names { font-family: var(--serif); font-size: clamp(1.7rem, 5vw, 2.3rem); margin: 28px 0 6px; }
+.closing-date { letter-spacing: 0.3em; color: var(--toffee); font-size: 0.8rem; }
+
+/* ---------- optional music toggle ---------- */
+.music-toggle {
+  position: fixed; right: 16px; bottom: 16px; z-index: 880;
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--card-strong);
+  backdrop-filter: blur(10px); box-shadow: var(--shadow);
+  display: grid; place-items: center;
+}
+.music-toggle::before { content: "\266A"; font-size: 18px; color: var(--ink); }
+.music-toggle.is-playing::before { content: "\275A\275A"; font-size: 11px; letter-spacing: 1px; }
+.music-icon { display: none; }
+
+@media (max-width: 720px) {
+  .countdown-three { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .venue-gallery { grid-template-columns: none; grid-auto-columns: 82%; }
+  .invite-card { padding: 32px 22px; }
+}
