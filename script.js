@@ -243,9 +243,9 @@ function generateInvitationCard(guestName, guestCount) {
   const ROW_X = CX+46, ROW_W = CW-92, ROW_H = 78, ROW_GAP = 90, ROW_START = CY+170;
   const rows = [
     { label: 'GUEST NAME', value: sanitizeName(guestName), italic: true },
-    { label: 'EVENT DATE & TIME', value: 'Saturday 8 August 2026  \u00B7  07:00 PM', italic: false },
+    { label: 'EVENT DATE & TIME', value: 'Saturday 8 August 2026  \u00B7  06:00 PM', italic: false },
     { label: 'VENUE', value: 'Swiss Club Cairo', italic: false },
-    { label: 'PARKING', value: 'Free parking inside the club', italic: false },
+    { label: 'PARKING', value: 'Inside the club', italic: false },
   ];
   rows.forEach((row, i) => {
     const ry = ROW_START + i * ROW_GAP;
