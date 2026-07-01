@@ -5,648 +5,736 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="description" content="Omar & Rewan are getting married — 8 August 2026 at Swiss Club Cairo. Come celebrate with us." />
-  <meta name="theme-color" content="#f4eeE4" />
-  <title>Omar &amp; Rewan · 8.8.2026</title>
+  <meta name="theme-color" content="#f7efe5" />
+  <title>Omar &amp; Rewan · An Intimate Celebration</title>
 
-  <!-- WhatsApp / social link preview -->
-  <meta property="og:type"        content="website" />
-  <meta property="og:url"         content="https://omar-rewan.vercel.app/" />
-  <meta property="og:title"       content="Omar &amp; Rewan — We&apos;re getting married!" />
+  <!-- tab icon (multiple formats for full browser support) -->
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+  <!-- link preview (WhatsApp / social) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://omar-rewan.vercel.app/" />
+  <meta property="og:title" content="Omar & Rewan — We're getting married!" />
   <meta property="og:description" content="8 August 2026 · Swiss Club Cairo. Come celebrate with us 🌿" />
-  <meta property="og:image"       content="https://omar-rewan.vercel.app/og-image.png?v=2" />
-  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image" content="https://omar-rewan.vercel.app/og-image.png" />
+  <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta name="twitter:card"        content="summary_large_image" />
-  <meta name="twitter:title"       content="Omar &amp; Rewan — We&apos;re getting married!" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Omar & Rewan — We're getting married!" />
   <meta name="twitter:description" content="8 August 2026 · Swiss Club Cairo. Come celebrate with us 🌿" />
-  <meta name="twitter:image"       content="https://omar-rewan.vercel.app/og-image.png?v=2" />
+  <meta name="twitter:image" content="https://omar-rewan.vercel.app/og-image.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
     rel="stylesheet" />
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=8" />
+  <noscript>
+    <style>
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .opening { display: none !important; }
+      .section-header::after { transform: scaleX(1) !important; }
+      .spy { display: none !important; }
+    </style>
+  </noscript>
 </head>
 
 <body>
+  <!-- top scroll progress hairline -->
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
-  <div id="theme-overlay" class="theme-overlay">
-    <div class="theme-content">
-      <h2 class="theme-title">Welcome!</h2>
-      <p class="theme-subtitle">Which side are you celebrating from?</p>
-      <div class="theme-buttons">
-        <button id="groomBtn" class="theme-btn" data-theme="groom">Omar's Side</button>
-        <button id="brideBtn" class="theme-btn" data-theme="bride">Rewan's Side</button>
+  <!-- ambient layers -->
+  <div class="page-halo page-halo-left" aria-hidden="true"></div>
+  <div class="page-halo page-halo-right" aria-hidden="true"></div>
+  <div class="evening-veil" id="eveningVeil" aria-hidden="true"></div>
+  <div class="garden-lights" id="gardenLights" aria-hidden="true"></div>
+  <div class="floating-petals" id="petals" aria-hidden="true"></div>
+
+  <!-- opening unveil -->
+  <div class="opening" id="opening">
+    <div class="opening-bg" aria-hidden="true"></div>
+    <div class="opening-scrim" aria-hidden="true"></div>
+    <div class="opening-inner">
+      <div class="opening-monogram" aria-hidden="true">
+        <span>O</span><em>&amp;</em><span>R</span>
       </div>
-    </div>
-  </div>
-
-  <div id="splash" class="splash">
-    <div class="splash-particles" id="splashParticles"></div>
-    <div class="splash-content">
-      <div class="splash-ornament top"></div>
-      <p class="splash-line" id="sl1">You are holding a piece of our heart...</p>
-      <p class="splash-line" id="sl2">Because you have been part of our story...</p>
-      <p class="splash-line" id="sl3">We would love for you to celebrate our new beginning.</p>
-      <div class="splash-divider"></div>
-      <button id="enterBtn" class="enter-btn" aria-label="Open invitation">
-        <span class="enter-btn-text">Open Our Love Story</span>
-        <span class="enter-btn-icon">v</span>
+      <p class="opening-names">Omar &amp; Rewan</p>
+      <p class="opening-lines">Together with our families,<br />we invite you to an intimate garden celebration</p>
+      <p class="opening-meta">08 · 08 · 2026<br /><span>Swiss Club Cairo</span></p>
+      <button class="opening-btn" id="openBtn" type="button">
+        <span>Open Invitation</span>
       </button>
-      <div class="splash-ornament bottom"></div>
     </div>
   </div>
 
-  <main id="mainContent" class="main-hidden">
-    <section id="hero" class="hero">
-      <div class="hero-bg-overlay parallax-bg"></div>
-      <div class="hero-content">
-        <p class="hero-pre reveal-item">The celebration of</p>
-        <h1 class="hero-names reveal-item">
-          <span class="name-zayn">Omar</span>
-          <span class="hero-ampersand">&</span>
-          <span class="name-gigi">Rewan</span>
-        </h1>
-        <p class="hero-tagline reveal-item">An outdoor evening at Swiss Club Cairo</p>
-        <p class="hero-date reveal-item" id="heroWeddingDate">Saturday - August 8, 2026</p>
-        <div class="hero-details reveal-item" data-delay="0.1">
-          <span class="hero-detail-chip">Doors open 5:00 PM</span>
-          <span class="hero-detail-chip">Ceremony 6:00 PM</span>
-          <span class="hero-detail-chip">Ends 9:00 PM</span>
-          <span class="hero-detail-chip">Swiss Club Cairo</span>
-        </div>
-        <div class="hero-scroll-hint">
-          <span class="scroll-arrow"></span>
-        </div>
-      </div>
-      <div class="floating-petals" id="petals"></div>
-    </section>
-
-    <section id="roots" class="roots section-padding">
-      <style>
-        .story-top-anchor {
-          display: flex;
-          justify-content: center;
-          margin: 0 auto 34px;
-        }
-
-        .story-circle {
-          position: relative;
-          border-radius: 50%;
-          overflow: hidden;
-          background: #fff;
-          margin: 0 auto;
-        }
-
-        .story-circle img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
-          border-radius: 50%;
-        }
-
-        .story-circle-top {
-          width: min(62vw, 300px);
-          aspect-ratio: 1 / 1;
-          border: 4px solid #5ca6d6;
-          box-shadow: 0 0 0 6px #ffffff;
-        }
-
-        .story-portraits-row {
-          width: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: flex-start;
-          gap: 56px;
-          margin-top: 20px;
-        }
-
-        .story-portrait {
-          text-align: center;
-        }
-
-        .story-circle-left,
-        .story-circle-right {
-          width: min(34vw, 165px);
-          aspect-ratio: 1 / 1;
-          box-shadow: 0 0 0 5px #ffffff;
-        }
-
-        .story-circle-left {
-          border: 4px solid #a33a3a;
-        }
-
-        .story-circle-right {
-          border: 4px solid #5ca6d6;
-        }
-
-        .story-caption {
-          margin-top: 14px;
-        }
-
-        .story-name {
-          display: block;
-          font-family: var(--serif);
-          font-size: clamp(1.8rem, 3.3vw, 2.35rem);
-          font-weight: 600;
-          line-height: 1.05;
-          color: #111;
-        }
-
-        .story-hint {
-          display: block;
-          margin-top: 2px;
-          font-family: var(--sans);
-          font-size: 0.82rem;
-          color: #111;
-          letter-spacing: 0.02em;
-        }
-
-        .story-video-container {
-          max-width: 1000px;
-          margin: 0 auto;
-          position: relative;
-          border-radius: 12px;
-          overflow: hidden;
-          background: #050505;
-          border: 1px solid rgba(92, 166, 214, 0.4);
-          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7), 0 0 20px rgba(92, 166, 214, 0.25);
-        }
-
-        .story-vision-grid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .story-video-player {
-          width: 100%;
-          height: 500px;
-          object-fit: cover;
-          display: block;
-        }
-
-        @media (max-width: 700px) {
-          .story-vision-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .story-video-player {
-            height: 380px;
-          }
-        }
-
-        @media (max-width: 600px) {
-          .story-portraits-row {
-            gap: 24px;
-          }
-
-          .story-circle-top {
-            width: min(80vw, 280px);
-          }
-
-          .story-circle-left,
-          .story-circle-right {
-            width: min(40vw, 140px);
-          }
-
-          .story-name {
-            font-size: clamp(1.4rem, 7vw, 1.95rem);
-          }
-        }
-      </style>
-
-      <div class="story-top-anchor reveal-item" data-delay="0">
-        <div class="story-circle story-circle-top">
-          <img src="Media/WhatsApp Image 2026-05-10 at 12.17.49 PM.jpeg" alt="Swiss Club Cairo garden lawn"
-            loading="lazy" />
-        </div>
-      </div>
-
-      <div class="section-header reveal-item">
-        <span class="section-label">Chapter One</span>
-        <h2 class="section-title">Where It All Begins</h2>
-        <p class="section-subtitle">Two hearts, one promise, and a beautiful evening ahead.</p>
-      </div>
-
-      <div class="roots-grid">
-        <div class="story-portraits-row">
-          <figure class="story-portrait reveal-item" data-delay="0">
-            <div class="story-circle story-circle-left">
-              <img src="Media/WhatsApp Image 2026-05-10 at 12.35.24 PM.jpeg" alt="Omar portrait" loading="lazy" />
-            </div>
-            <figcaption class="story-caption">
-              <span class="story-name">Omar</span>
-              <span class="story-hint">The groom</span>
-            </figcaption>
-          </figure>
-
-          <figure class="story-portrait reveal-item" data-delay="0.1">
-            <div class="story-circle story-circle-right">
-              <img src="Media/WhatsApp Image 2026-05-10 at 12.35.17 PM.jpeg" alt="Rewan portrait" loading="lazy" />
-            </div>
-            <figcaption class="story-caption">
-              <span class="story-name">Rewan</span>
-              <span class="story-hint">The bride</span>
-            </figcaption>
-          </figure>
-        </div>
-      </div>
-
-      <div class="roots-crossing reveal-item">
-        <p class="roots-crossing-text">Until life, in its own perfect timing, quietly brought two beautiful souls
-          together and said:
-          <em>"It's time."</em>
-        </p>
-      </div>
-    </section>
-
-    <section id="story-video" class="story-video section-padding">
-      <div class="section-header reveal-item">
-        <span class="section-label">Wedding Vision</span>
-        <h2 class="section-title"
-          style="font-family: var(--serif); font-size: clamp(2rem, 4vw, 2.8rem); text-transform: none; margin-bottom: 24px;">
-          The Garden Mood We Love</h2>
-        <p class="section-subtitle">Warm lights, flowers, and an outdoor setting that feels intimate from golden hour
-          to nightfall.</p>
-      </div>
-
-      <div class="story-video-container reveal-item">
-        <div class="story-vision-grid">
-          <img class="story-video-player" src="Media/WhatsApp Image 2026-05-10 at 12.31.52 PM.jpeg"
-            alt="Wedding decor inspiration in daylight" loading="lazy" />
-          <img class="story-video-player" src="Media/WhatsApp Image 2026-05-10 at 12.31.49 PM.jpeg"
-            alt="Wedding decor inspiration at night" loading="lazy" />
-        </div>
-      </div>
-    </section>
-
-    <section id="program" class="program section-padding">
-      <div class="program-bg-pattern parallax-bg"></div>
-      <div class="section-header reveal-item">
-        <span class="section-label">The Evening</span>
-        <h2 class="section-title">A Day to Remember</h2>
-        <p class="section-subtitle">Doors open at 5:00 PM, the ceremony begins at 6:00 PM, and the evening ends at
-          9:00 PM.</p>
-      </div>
-
-      <div class="timeline">
-        <div class="timeline-line"></div>
-
-        <div class="timeline-item reveal-item" data-delay="0">
-          <div class="timeline-dot">
-            <span class="timeline-icon">*</span>
-          </div>
-          <div class="timeline-card left">
-            <span class="timeline-time">5:00 PM</span>
-            <h3 class="timeline-title">Doors open, guests welcome</h3>
-            <p class="timeline-desc">Settle into the garden, find your seat, and enjoy the first moments of the
-              evening together.</p>
-          </div>
-        </div>
-
-        <div class="timeline-item reveal-item" data-delay="0.15">
-          <div class="timeline-dot">
-            <span class="timeline-icon">o</span>
-          </div>
-          <div class="timeline-card right">
-            <span class="timeline-time">6:00 PM</span>
-            <h3 class="timeline-title">Grand Entrance (KEY moment)</h3>
-            <p class="timeline-desc">The evening truly begins as Omar and Rewan make their entrance and the celebration
-              opens in full.</p>
-          </div>
-        </div>
-
-        <div class="timeline-item reveal-item" data-delay="0.3">
-          <div class="timeline-dot">
-            <span class="timeline-icon">+</span>
-          </div>
-          <div class="timeline-card left">
-            <span class="timeline-time">6:10 PM</span>
-            <h3 class="timeline-title">Katb Ketab ceremony</h3>
-            <p class="timeline-desc">Join us for the ceremony and the moment our new chapter officially begins.</p>
-          </div>
-        </div>
-
-        <div class="timeline-item reveal-item" data-delay="0.45">
-          <div class="timeline-dot">
-            <span class="timeline-icon">#</span>
-          </div>
-          <div class="timeline-card right">
-            <span class="timeline-time">6:40 PM</span>
-            <h3 class="timeline-title">First dance &amp; dance and celebrate</h3>
-            <p class="timeline-desc">The celebration moves into music, dancing, and the joyful energy of the night.</p>
-          </div>
-        </div>
-
-        <div class="timeline-item reveal-item" data-delay="0.6">
-          <div class="timeline-dot">
-            <span class="timeline-icon">*</span>
-          </div>
-          <div class="timeline-card left">
-            <span class="timeline-time">7:45 PM</span>
-            <h3 class="timeline-title">Sunset, garden transforms (KEY moment)</h3>
-            <p class="timeline-desc">As the light softens, the garden shifts into its evening glow and the atmosphere
-              changes beautifully.</p>
-          </div>
-        </div>
-
-        <div class="timeline-item reveal-item" data-delay="0.75">
-          <div class="timeline-dot">
-            <span class="timeline-icon">o</span>
-          </div>
-          <div class="timeline-card right">
-            <span class="timeline-time">8:00 PM</span>
-            <h3 class="timeline-title">dance and family dances- guests depart with their gift (KEY moment)</h3>
-            <p class="timeline-desc">A final joyful wave of dancing with family before the evening begins to close.</p>
-          </div>
-        </div>
-
-        <div class="timeline-item reveal-item" data-delay="0.9">
-          <div class="timeline-dot">
-            <span class="timeline-icon">+</span>
-          </div>
-          <div class="timeline-card left">
-            <span class="timeline-time">9:00 PM</span>
-            <h3 class="timeline-title">farwel</h3>
-            <p class="timeline-desc">The evening ends at 9:00 PM with love, thanks, and warm goodbyes.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="dresscode" class="dresscode section-padding">
-      <div class="section-header reveal-item">
-        <span class="section-label">Dress Code</span>
-        <h2 class="section-title">Dress the Part</h2>
-        <p class="section-subtitle">An elegant outdoor evening calls for formal looks in soft, warm tones.</p>
-      </div>
-
-      <div class="dresscode-grid">
-        <div class="dresscode-card reveal-item" data-delay="0">
-          <div class="dresscode-icon-wrap gentleman">
-            <svg class="dresscode-svg" viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="40" cy="18" r="14" stroke="currentColor" stroke-width="2" />
-              <path d="M16 100 C16 70 25 58 40 58 C55 58 64 70 64 100" stroke="currentColor" stroke-width="2"
-                fill="none" />
-              <path d="M40 58 L34 72 L40 68 L46 72 Z" stroke="currentColor" stroke-width="1.5" fill="currentColor"
-                opacity="0.4" />
-              <path d="M35 58 L28 90" stroke="currentColor" stroke-width="1.5" />
-              <path d="M45 58 L52 90" stroke="currentColor" stroke-width="1.5" />
-            </svg>
-          </div>
-          <h3 class="dresscode-title">Gentlemen</h3>
-          <p class="dresscode-palette">Suit and tie - navy - grey - beige - ivory</p>
-          <p class="dresscode-note">Suit and tie - classic suit in navy, grey, beige, or ivory. A pocket square in
-            blush or sage would be a beautiful touch.</p>
-          <div class="dresscode-swatches">
-            <div class="swatch" style="background:#B8C9B0;" title="Sage Green"></div>
-            <div class="swatch" style="background:#D4B896;" title="Warm Mauve"></div>
-            <div class="swatch" style="background:#C9A96E;" title="Champagne Gold"></div>
-          </div>
-        </div>
-
-        <div class="dresscode-divider reveal-item">
-          <div class="dresscode-amp">&</div>
-        </div>
-
-        <div class="dresscode-card reveal-item" data-delay="0.1">
-          <div class="dresscode-icon-wrap lady">
-            <svg class="dresscode-svg" viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="40" cy="16" r="12" stroke="currentColor" stroke-width="2" />
-              <path d="M28 38 C28 38 20 55 14 100 L66 100 C60 55 52 38 52 38 Z" stroke="currentColor" stroke-width="2"
-                fill="currentColor" opacity="0.1" />
-              <path d="M28 38 L40 30 L52 38" stroke="currentColor" stroke-width="1.5" fill="none" />
-            </svg>
-          </div>
-          <h3 class="dresscode-title">Ladies</h3>
-          <p class="dresscode-palette">Formal gown or elegant dress</p>
-          <p class="dresscode-note">Formal gown or elegant dress - floor-length, midi, or elegant cocktail. Soft warm
-            tones warmly welcomed: ivory, blush, champagne, sage.</p>
-          <div class="dresscode-swatches">
-            <div class="swatch" style="background:#FAF6EE;" title="Ivory"></div>
-            <div class="swatch" style="background:#E8C4B8;" title="Blush Rose"></div>
-            <div class="swatch" style="background:#B8C9B0;" title="Sage Green"></div>
-          </div>
-        </div>
-      </div>
-
-      <p class="dresscode-footer reveal-item">Please avoid: Black, all-white (that is Rewan's day), bright neons.
-        August heat note: The evening is fully outdoors. We will provide fans - breathable elegant fabrics are your
-        best friend. We kindly suggest leaving very young children at home for the evening. If you do bring little
-        ones, we have arranged a lovely Kids Area in the garden where they can play comfortably.</p>
-    </section>
-
-    <section id="venue" class="venue section-padding">
-      <div class="section-header reveal-item">
-        <span class="section-label">The Venue</span>
-        <h2 class="section-title">Swiss Club Cairo</h2>
-        <p class="section-subtitle">An outdoor garden setting with historic character, warm stone, and evening lights.
-        </p>
-      </div>
-
-      <div class="venue-gallery reveal-item">
-        <div class="venue-img-main">
-          <img src="Media/7.jpeg" alt="Swiss Club Cairo exterior by day" class="venue-img" loading="lazy" />
-          <div class="venue-img-overlay">
-            <span class="venue-img-label">Swiss Club Cairo - exterior by day</span>
-          </div>
-        </div>
-        <div class="venue-img-grid">
-          <div class="venue-img-small">
-            <img src="Media/1.jpeg" alt="Swiss Club Cairo lawn" class="venue-img" loading="lazy" />
-          </div>
-          <div class="venue-img-small">
-            <img src="Media/2.jpeg" alt="Swiss Club Cairo at night" class="venue-img" loading="lazy" />
-          </div>
-          <div class="venue-img-small">
-            <img src="Media/5.jpeg" alt="Swiss Club Cairo entrance at night" class="venue-img" loading="lazy" />
-          </div>
-          <div class="venue-img-small">
-            <img src="Media/6.jpeg" alt="Swiss Club Cairo kids area"
-              class="venue-img" loading="lazy" />
-          </div>
-          <div class="venue-img-small">
-            <img src="Media/3.jpeg" alt="Swiss Club Cairo play area"
-              class="venue-img" loading="lazy" />
-          </div>
-        </div>
-      </div>
-
-      <div class="venue-cta reveal-item">
-        <p class="venue-address">Swiss Club Cairo</p>
-        <a href="https://maps.app.goo.gl/iwaNAY48Krx1mPwG9?g_st=ic" target="_blank" rel="noopener noreferrer"
-          id="navigateBtn" class="navigate-btn">
-          <span class="navigate-icon">Map</span>
-          Navigate to Love
-        </a>
-      </div>
-    </section>
-
-    <section id="rsvp" class="rsvp section-padding">
-      <div class="section-header reveal-item">
-        <span class="section-label">RSVP</span>
-        <h2 class="section-title">Will You Celebrate With Us?</h2>
-        <p class="section-subtitle">A quick response helps us prepare your seat with love. Kindly reply by 1 July
-          2026.</p>
-      </div>
-
-      <div class="rsvp-card reveal-item">
-        <form id="rsvpForm" class="rsvp-form" novalidate>
-          <div class="rsvp-float-field">
-            <input id="rsvpName" class="rsvp-float-input" type="text" maxlength="80" placeholder=" " required />
-            <label class="rsvp-float-label" for="rsvpName">Your Full Name</label>
-            <span class="rsvp-float-line"></span>
-          </div>
-
-          <div class="rsvp-float-field">
-            <input id="rsvpGuests" class="rsvp-float-input" type="number" min="1" max="6" placeholder=" " value="1"
-              required />
-            <label class="rsvp-float-label" for="rsvpGuests">Number of Guests (1-6)</label>
-            <span class="rsvp-float-line"></span>
-          </div>
-
-          <div class="rsvp-options" role="radiogroup" aria-label="Attendance status">
-            <label class="rsvp-option">
-              <input type="radio" name="attendance" value="joyfully_attending" checked />
-              <span>Joyfully Attending</span>
-            </label>
-            <label class="rsvp-option">
-              <input type="radio" name="attendance" value="regretfully_absent" />
-              <span>Regretfully Absent</span>
-            </label>
-          </div>
-
-          <div class="rsvp-float-field">
-            <textarea id="rsvpNote" class="rsvp-float-input rsvp-float-textarea" rows="3" maxlength="220"
-              placeholder=" "></textarea>
-            <label class="rsvp-float-label" for="rsvpNote">A Sweet Note (Optional)</label>
-            <span class="rsvp-float-line"></span>
-          </div>
-
-          <div class="rsvp-actions">
-            <button type="submit" id="rsvpSubmitBtn" class="rsvp-submit-btn">
-              <span>Confirm Attendance</span>
-              <span class="send-icon">Love</span>
-            </button>
-          </div>
-          <p id="rsvpSuccess" class="rsvp-success" aria-live="polite"></p>
-        </form>
-        <p class="rsvp-deadline-note">RSVP deadline: 1 July 2026</p>
-      </div>
-    </section>
-
-    <section id="digital-ticket" class="digital-ticket section-padding">
-      <div class="section-header reveal-item">
-        <span class="section-label">Your Keepsake</span>
-        <h2 class="section-title">The Royal Invitation</h2>
-        <p class="section-subtitle">Claim your personalized invitation and save it to your gallery.</p>
-      </div>
-
-      <div class="ticket-wrap">
-        <div id="ticketCard" class="ticket-card">
-          <div class="ticket-bg-icon heart-a">LOVE</div>
-          <div class="ticket-bg-icon heart-b">LOVE</div>
-          <div class="ticket-bg-icon mc-badge">MC</div>
-          <div class="ticket-bg-icon spark">*</div>
-
-          <div class="ticket-header">
-            <p class="ticket-kicker">Your Digital Ticket</p>
-            <h3 id="ticketCoupleNames" class="ticket-title">Omar &amp; Rewan</h3>
-          </div>
-
-          <div class="ticket-grid">
-            <div class="ticket-row">
-              <span class="ticket-label">Guest Name</span>
-              <span id="ticketGuestName" class="ticket-value ticket-name">Your Name Here</span>
-            </div>
-            <div class="ticket-row">
-              <span class="ticket-label">Side</span>
-              <span id="ticketGuestSide" class="ticket-value">Select Omar or Rewan</span>
-            </div>
-            <div class="ticket-row">
-              <span class="ticket-label">Event Date &amp; Time</span>
-              <span id="ticketEventDate" class="ticket-value">Saturday - 8/8/2026 - 06:00 PM</span>
-            </div>
-            <div class="ticket-row">
-              <span class="ticket-label">Location</span>
-              <span id="ticketLocationText" class="ticket-value">Swiss Club Cairo</span>
-            </div>
-          </div>
-
-          <div class="ticket-footer">
-            <span class="ticket-code">INV-2026-LOVE</span>
-          </div>
-        </div>
-
-        <div class="ticket-controls">
-          <label for="ticketNameInput" class="ticket-input-label">Enter Your Name to Claim Your Invitation</label>
-          <input id="ticketNameInput" class="ticket-name-input" type="text" maxlength="80"
-            placeholder="Type your full name..." />
-          <button id="saveTicketBtn" class="save-ticket-btn" type="button">Save Ticket to Gallery</button>
-          <p id="ticketStatus" class="ticket-status" aria-live="polite"></p>
-        </div>
-      </div>
-    </section>
-
-    <footer id="footer" class="footer">
-      <div class="footer-ornament"></div>
-
-      <div class="footer-content">
-        <h2 class="footer-names reveal-item">Omar &amp; Rewan</h2>
-        <p class="footer-date reveal-item" id="footerWeddingDate">August 8, 2026</p>
-
-        <div class="countdown-wrapper reveal-item" id="countdown">
-          <div class="countdown-item">
-            <span class="countdown-num" id="cd-days">-</span>
-            <span class="countdown-label">Days</span>
-          </div>
-          <div class="countdown-sep">:</div>
-          <div class="countdown-item">
-            <span class="countdown-num" id="cd-hours">-</span>
-            <span class="countdown-label">Hours</span>
-          </div>
-          <div class="countdown-sep">:</div>
-          <div class="countdown-item">
-            <span class="countdown-num" id="cd-mins">-</span>
-            <span class="countdown-label">Minutes</span>
-          </div>
-          <div class="countdown-sep">:</div>
-          <div class="countdown-item">
-            <span class="countdown-num" id="cd-secs">-</span>
-            <span class="countdown-label">Seconds</span>
-          </div>
-        </div>
-
-        <blockquote class="footer-quote reveal-item">
-          "Love is not just something you feel,<br />it's something you do."
-        </blockquote>
-
-        <p class="footer-credit reveal-item">Made with love for Omar and Rewan.</p>
-      </div>
-    </footer>
-  </main>
-
-  <nav class="side-nav" id="sideNav" aria-label="Section navigation">
-    <a href="#hero" class="nav-dot active" data-section="hero" title="Hero"></a>
-    <a href="#roots" class="nav-dot" data-section="roots" title="Our Roots"></a>
-    <a href="#program" class="nav-dot" data-section="program" title="Program"></a>
-    <a href="#dresscode" class="nav-dot" data-section="dresscode" title="Dress Code"></a>
-    <a href="#venue" class="nav-dot" data-section="venue" title="Venue"></a>
-    <a href="#rsvp" class="nav-dot" data-section="rsvp" title="RSVP"></a>
-    <a href="#digital-ticket" class="nav-dot" data-section="digital-ticket" title="Digital Ticket"></a>
+  <!-- side scroll-spy nav -->
+  <nav class="spy" id="spyNav" aria-label="Jump to section">
+    <a href="#welcome" data-spy="welcome"><span></span><b>Welcome</b></a>
+    <a href="#details" data-spy="details"><span></span><b>Details</b></a>
+    <a href="#venue" data-spy="venue"><span></span><b>Venue</b></a>
+    <a href="#dress-code" data-spy="dress-code"><span></span><b>Colors</b></a>
+    <a href="#rsvp" data-spy="rsvp"><span></span><b>Reserve</b></a>
   </nav>
 
-  <script src="script.js"></script>
 
-  <audio id="weddingMusic" loop preload="none"></audio>
+
+
+
+
+
+
+  <main class="site">
+    <section class="hero section" id="welcome">
+      <div class="hero-media">
+        <img src="Media/4.jpeg" alt="One of Cairo's historic villas at night, lit with warm light" />
+      </div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <p class="eyebrow reveal">Together with our families</p>
+        <h1 class="hero-title reveal" id="coupleNames">
+          <span class="hero-name">Omar</span>
+          <span class="hero-amp" aria-hidden="true">&amp;</span>
+          <span class="hero-name">Rewan</span>
+        </h1>
+        <p class="hero-date reveal" id="weddingDateLabel">08 · 08 · 2026</p>
+        <p class="hero-quote reveal">We invite you to an intimate garden celebration as we begin our next chapter.</p>
+        <div class="hero-actions reveal">
+          <a class="button button-solid" href="#rsvp">Reserve your place</a>
+          <a class="button button-outline" href="#details">View details</a>
+
+
+
+
+
+        </div>
+      </div>
+      <a class="hero-scroll" href="#countdown" aria-label="Scroll down">
+        <span class="hero-scroll-dot"></span>
+      </a>
+    </section>
+
+    <section class="section section-countdown" id="countdown">
+      <div class="section-header reveal">
+        <p class="section-kicker">The wait</p>
+        <h2 class="section-title">Until we celebrate together.</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="countdown-grid countdown-three">
+        <article class="countdown-card reveal">
+          <span class="countdown-value" id="days">00</span>
+          <span class="countdown-label">Days</span>
+        </article>
+        <article class="countdown-card reveal">
+          <span class="countdown-value" id="hours">00</span>
+          <span class="countdown-label">Hours</span>
+        </article>
+        <article class="countdown-card reveal">
+          <span class="countdown-value" id="minutes">00</span>
+          <span class="countdown-label">Minutes</span>
+        </article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </section>
+
+    <section class="section section-details" id="details">
+      <div class="section-header reveal">
+        <p class="section-kicker">The details</p>
+        <h2 class="section-title">An evening to remember.</h2>
+
+
+
+
+      </div>
+      <article class="invite-card reveal">
+        <p class="invite-day">Saturday</p>
+        <p class="invite-date">8 August 2026</p>
+        <div class="invite-line"></div>
+        <dl class="invite-rows">
+          <div><dt>Time</dt><dd>at 6:00 PM</dd></div>
+          <div><dt>Place</dt><dd>Swiss Club Cairo</dd></div>
+          <div><dt>Parking</dt><dd>Inside the club</dd></div>
+        </dl>
+        <div class="invite-actions">
+          <a class="button button-outline" id="mapsLink" href="https://maps.app.goo.gl/iwaNAY48Krx1mPwG9?g_st=ic" target="_blank" rel="noopener noreferrer">📍 Open in Maps</a>
+        </div>
+        <div class="calendar-inline" id="calendar">
+          <span class="calendar-inline-label">Save to calendar</span>
+          <a class="cal-btn" id="googleCalendarLink" href="#" target="_blank" rel="noopener noreferrer">Google</a>
+          <a class="cal-btn" id="appleCalendarLink" href="#" download="Omar-Rewan-Wedding.ics">Apple</a>
+          <a class="cal-btn" id="outlookCalendarLink" href="#" download="Omar-Rewan-Wedding.ics">Outlook</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="section section-venue" id="venue">
+      <div class="section-header reveal">
+        <p class="section-kicker">The setting</p>
+        <h2 class="section-title">A hidden garden villa.</h2>
+        <p class="section-lead venue-poem">
+          Nestled within one of Cairo's historic villas, our celebration will unfold
+          beneath the trees — surrounded by candlelight, soft music, and the people
+          who matter most.<br /><em>The rest, we'll leave as a surprise.</em>
+        </p>
+      </div>
+      <div class="venue-gallery reveal">
+        <figure class="venue-photo"><img src="Media/5.jpeg" alt="The villa at night" loading="lazy" /></figure>
+        <figure class="venue-photo"><img src="Media/4.jpeg" alt="The villa and garden" loading="lazy" /></figure>
+        <figure class="venue-photo"><img src="Media/13.png" alt="The open garden lawn" loading="lazy" /></figure>
+        <figure class="venue-photo"><img src="Media/7.jpeg" alt="Tree-lined garden pathways" loading="lazy" /></figure>
+        <figure class="venue-photo"><img src="Media/2.jpeg" alt="Warm garden lighting at the entrance" loading="lazy" /></figure>
+      </div>
+      <div class="venue-map reveal">
+        <iframe
+          title="Swiss Club Cairo map"
+          src="https://www.google.com/maps?q=Swiss%20Club%20Cairo&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </section>
+
+    <section class="section section-dress" id="dress-code">
+      <div class="section-header reveal">
+        <p class="section-kicker">Dress code</p>
+        <h2 class="section-title">Our color story.</h2>
+        <p class="section-lead">Soft, garden-inspired tones to match the evening we've imagined.</p>
+      </div>
+      <div class="palette-layout">
+        <div class="palette-grid">
+          <article class="palette-card reveal"><span style="background:#cfe0f3"></span>Powder Blue</article>
+          <article class="palette-card reveal"><span style="background:#d9c8ef"></span>Lavender</article>
+          <article class="palette-card reveal"><span style="background:#f5d8bf"></span>Soft Peach</article>
+          <article class="palette-card reveal"><span style="background:#f3e28b"></span>Butter Yellow</article>
+          <article class="palette-card reveal"><span style="background:#d5d8dc"></span>Dove Grey</article>
+          <article class="palette-card reveal"><span style="background:#cfe6d0"></span>Soft Sage</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <aside class="dress-note reveal">
+          <p>
+            To preserve the atmosphere we've envisioned, shades of ivory, champagne,
+            beige, and soft blush will be reserved for the bride and her immediate family.
+          </p>
+          <p class="dress-note-thanks">Thank you for helping us bring this evening to life.</p>
+        </aside>
+      </div>
+
+
+
+
+
+    </section>
+
+    <section class="section section-kids" id="kids-area">
+      <div class="section-header reveal">
+        <p class="section-kicker">Little guests</p>
+        <h2 class="section-title">An evening for the grown-ups.</h2>
+        <p class="section-lead">
+          Our celebration is designed to be an intimate evening for adults. However,
+          should bringing your little one be necessary, a dedicated children's area
+          will be available within the venue. We hope this lets everyone celebrate comfortably.
+        </p>
+      </div>
+      <div class="kids-gallery kids-sepia reveal">
+        <figure class="kids-photo"><img src="Media/3.jpeg" alt="The children's area at the venue" loading="lazy" /><figcaption>Little Guests Area</figcaption></figure>
+        <figure class="kids-photo"><img src="Media/6.jpeg" alt="A quiet space for little ones" loading="lazy" /><figcaption>Little Guests Area</figcaption></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </section>
+
+    <section class="section section-rsvp" id="rsvp">
+      <div class="section-header reveal">
+        <p class="section-kicker">RSVP</p>
+        <h2 class="section-title">Reserve your place.</h2>
+        <p class="section-lead">Kindly let us know by 25 July so we can prepare a seat for you.</p>
+
+      </div>
+      <div class="rsvp-layout">
+        <form class="rsvp-form reveal" id="rsvpForm" novalidate>
+          <div class="field-grid">
+            <label class="field">
+              <span>Full Name</span>
+              <input id="fullName" name="fullName" type="text" autocomplete="name" required />
+            </label>
+            <label class="field">
+              <span>Phone Number</span>
+              <input id="phoneNumber" name="phoneNumber" type="tel" autocomplete="tel" />
+            </label>
+            <label class="field">
+              <span>Number of Guests</span>
+              <input id="guestCount" name="guestCount" type="number" min="1" max="10" value="1" required />
+            </label>
+          <label class="field">
+            <span>Bringing Children?</span>
+            <select id="bringingChildren" name="bringingChildren">
+              <option value="No">No</option>
+              <option value="Yes">Yes</option>
+            </select>
+          </label>
+          <label class="field" id="childrenCountField">
+            <span>How many children?</span>
+            <input id="childrenCount" name="childrenCount" type="number" min="0" max="10" value="0" />
+          </label>
+        </div>
+
+          <div class="radio-group" role="radiogroup" aria-label="Attendance">
+            <label class="radio-pill">
+              <input type="radio" name="attendance" value="Attending" checked />
+              <span>Attending</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </label>
+            <label class="radio-pill">
+              <input type="radio" name="attendance" value="Not Attending" />
+              <span>Not Attending</span>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>A note for us (optional)</span>
+            <textarea id="specialNotes" name="specialNotes" rows="3" placeholder="A song you want to hear, a hello, anything 🤍"></textarea>
+          </label>
+
+
+
+          <div class="rsvp-actions">
+            <button class="button button-solid" type="submit" id="submitRsvp">Reserve your place</button>
+
+
+
+          </div>
+          <p class="rsvp-status" id="rsvpStatus" aria-live="polite"></p>
+        </form>
+
+      </div>
+    </section>
+
+    <section class="section section-closing" id="closing">
+      <div class="closing-inner reveal">
+        <p class="section-kicker">One last thing…</p>
+        <p class="closing-text">
+          Your presence means more to us than words can ever express.
+          Thank you for being part of this beautiful beginning.
+        </p>
+        <p class="closing-text closing-text-soft">We cannot wait to celebrate together.</p>
+        <p class="closing-names">Omar &amp; Rewan</p>
+        <p class="closing-date" id="footerDate">08 · 08 · 2026</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </section>
+
+    <!-- optional ambient music (off by default; needs Media/music.mp3) -->
+    <button class="music-toggle" id="musicToggle" type="button" aria-label="Play music" hidden>
+      <span class="music-icon" aria-hidden="true"></span>
+    </button>
+    <audio id="bgMusic" loop preload="none">
+      <source src="Media/music.mp3" type="audio/mpeg" />
+    </audio>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </main>
+
+  <!-- photo lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Photo viewer">
+    <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Close">&times;</button>
+    <img id="lightboxImg" alt="" />
+  </div>
+
+
+
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="script.js?v=8" defer></script>
 </body>
 
 </html>
