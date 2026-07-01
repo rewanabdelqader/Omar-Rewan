@@ -207,22 +207,22 @@ function initMotion() {
     });
   });
 
-  // Cinematic parallax: the hero photo drifts slower than the scroll.
+  // Cinematic parallax + slow zoom on the hero photo (gap-proof: generous scale).
   if (!reduce) {
-    gsap.fromTo(
-      '.hero-media',
-      { yPercent: -6 },
-      {
-        yPercent: 6,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.hero',
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 0.6,
-        },
-      }
-    );
+    gsap.set('.hero-media img', { scale: 1.22, transformOrigin: '50% 50%' });
+    gsap.to('.hero-media img', {
+      scale: 1.3, duration: 24, ease: 'sine.inOut', yoyo: true, repeat: -1,
+    });
+    gsap.to('.hero-media img', {
+      yPercent: 8,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 0.6,
+      },
+    });
   }
 
   window.addEventListener('load', () => ScrollTrigger.refresh());

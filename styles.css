@@ -823,7 +823,8 @@ button {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-top: 18px;
+  justify-content: center;
+  margin-top: 22px;
 }
 
 .rsvp-actions .button {
@@ -986,6 +987,7 @@ button {
   .hero-actions,
   .rsvp-actions {
     flex-direction: column;
+    align-items: center;
   }
 
   .button,
@@ -1225,42 +1227,60 @@ body.is-dusk .garden-lights { opacity: 1; }
 /* --- scroll-spy side nav --- */
 .spy {
   position: fixed;
-  right: 22px;
+  right: 24px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 850;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  align-items: flex-end;
+  gap: 18px;
   opacity: 0;
   transition: opacity 0.6s ease;
 }
+.spy::before {
+  content: "";
+  position: absolute;
+  right: 5px;
+  top: 4px;
+  bottom: 4px;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(122, 129, 99, 0.35), transparent);
+}
 body.entered .spy { opacity: 1; }
 .spy a {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 12px;
+  z-index: 1;
 }
 .spy a span {
   width: 9px; height: 9px;
   border-radius: 50%;
-  border: 1px solid var(--toffee);
-  background: transparent;
-  transition: background 0.3s ease, transform 0.3s ease;
+  border: 1.5px solid var(--toffee);
+  background: var(--warm-white);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 .spy a b {
-  font-size: 0.66rem;
-  letter-spacing: 0.16em;
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--muted);
   opacity: 0;
-  transform: translateX(6px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  font-weight: 500;
+  transform: translateX(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  font-weight: 600;
 }
-.spy a:hover b { opacity: 1; transform: translateX(0); }
-.spy a.is-active span { background: var(--toffee); transform: scale(1.25); }
+.spy a:hover b { opacity: 0.8; transform: translateX(0); }
+.spy a:hover span { border-color: var(--champagne); transform: scale(1.15); }
+.spy a.is-active span {
+  background: var(--champagne);
+  border-color: var(--champagne);
+  transform: scale(1.35);
+  box-shadow: 0 0 0 4px rgba(214, 178, 124, 0.18);
+}
 .spy a.is-active b { opacity: 1; transform: translateX(0); color: var(--ink); }
 
 /* --- lightbox --- */
@@ -1466,7 +1486,7 @@ html, body { margin: 0; padding: 0; }
 .opening { background: #181210; }
 .opening-bg {
   position: absolute; inset: 0; z-index: 0;
-  background: url("Media/2.jpeg") center / cover no-repeat;
+  background: url("Media/5.jpeg") center / cover no-repeat;
   transform: scale(1.14);
   animation: openingZoom 14s ease-out forwards;
 }
@@ -1597,5 +1617,7 @@ html, body { margin: 0; padding: 0; }
 
 /* ---- GSAP motion: let GSAP own the reveal transforms, add parallax room ---- */
 .gsap-on .reveal { transition: none !important; }
-.gsap-on .hero-media { height: 120%; top: -10%; }
+/* ---- GSAP motion: keep hero full-bleed, GSAP drives the zoom/parallax ---- */
+.gsap-on .hero-media { inset: 0; height: 100%; top: 0; }
+.gsap-on .hero-media img { animation: none; }
 .gsap-open .opening-inner { animation: none; }
