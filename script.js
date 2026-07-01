@@ -134,8 +134,6 @@ function initRevealAnimations() {
   const items = $$('.reveal');
   if (!items.length) return;
 
-  // Give siblings within the same container a staggered delay so groups
-  // cascade in instead of all snapping at once.
   const groups = new Map();
   items.forEach((item) => {
     const parent = item.parentElement;
@@ -158,6 +156,94 @@ function initRevealAnimations() {
   );
 
   items.forEach((item) => observer.observe(item));
+}
+
+// --- Motion: GSAP cinematic reveals + parallax, with graceful fallback -------
+function hasGsap() {
+  return typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
+}
+
+function initMotion() {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!hasGsap()) {
+    initRevealAnimations();
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+  document.documentElement.classList.add('gsap-on');
+
+  // Hero content is handled by the opening sequence — reveal everything else here.
+  const items = $$('.reveal').filter((el) => !el.closest('.hero'));
+
+  items.forEach((el) => {
+    const markVisible = () => el.classList.add('is-visible');
+
+    if (reduce) {
+      gsap.set(el, { opacity: 1, y: 0 });
+      markVisible();
+      return;
+    }
+
+    const siblings = Array.from(el.parentElement.children).filter((c) => c.classList.contains('reveal'));
+    const idx = siblings.indexOf(el);
+
+    gsap.set(el, { opacity: 0, y: 30 });
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 88%',
+      once: true,
+      onEnter: () => {
+        markVisible();
+        gsap.to(el, {
+          opacity: 1,
+          y: 0,
+          duration: 1.1,
+          delay: idx * 0.08,
+          ease: 'power3.out',
+        });
+      },
+    });
+  });
+
+  // Cinematic parallax: the hero photo drifts slower than the scroll.
+  if (!reduce) {
+    gsap.fromTo(
+      '.hero-media',
+      { yPercent: -6 },
+      {
+        yPercent: 6,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 0.6,
+        },
+      }
+    );
+  }
+
+  window.addEventListener('load', () => ScrollTrigger.refresh());
+}
+
+// Play a refined entrance for the hero once the invitation is opened.
+function playHeroEntrance() {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const heroItems = $$('.hero .reveal');
+  if (!heroItems.length) return;
+
+  if (!hasGsap() || reduce) {
+    heroItems.forEach((el) => el.classList.add('is-visible'));
+    return;
+  }
+
+  gsap.fromTo(
+    heroItems,
+    { opacity: 0, y: 34 },
+    { opacity: 1, y: 0, duration: 1.2, stagger: 0.14, ease: 'power3.out', delay: 0.25 }
+  );
 }
 
 function initCountdown() {
@@ -326,11 +412,23 @@ function initOpening() {
     opening.classList.add('is-open');
     document.body.classList.remove('is-locked');
     document.body.classList.add('entered');
+    playHeroEntrance();
     window.setTimeout(() => opening.remove(), 1300);
   };
 
   openBtn?.addEventListener('click', reveal);
   opening.addEventListener('click', (e) => { if (e.target === opening) reveal(); });
+
+  // Sequential entrance for the invitation, inspired by the original splash.
+  if (hasGsap() && !reduce) {
+    document.documentElement.classList.add('gsap-open');
+    gsap.timeline({ defaults: { ease: 'power3.out' } })
+      .from('.opening-monogram', { opacity: 0, y: 22, duration: 1.1, delay: 0.3 })
+      .from('.opening-names', { opacity: 0, y: 16, duration: 0.9 }, '-=0.55')
+      .from('.opening-lines', { opacity: 0, y: 18, duration: 1.0 }, '-=0.45')
+      .from('.opening-meta', { opacity: 0, y: 14, duration: 0.9 }, '-=0.5')
+      .from('.opening-btn', { opacity: 0, y: 14, duration: 0.9 }, '-=0.45');
+  }
 
   if (reduce) reveal();
 }
@@ -487,7 +585,7 @@ function initMusic() {
 function init() {
   initStaticContent();
   createPetals();
-  initRevealAnimations();
+  initMotion();
   initCountdown();
   initRsvpForm();
   initOpening();

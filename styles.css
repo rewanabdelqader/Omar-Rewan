@@ -1594,3 +1594,8 @@ html, body { margin: 0; padding: 0; }
   .venue-gallery { grid-template-columns: none; grid-auto-columns: 82%; }
   .invite-card { padding: 32px 22px; }
 }
+
+/* ---- GSAP motion: let GSAP own the reveal transforms, add parallax room ---- */
+.gsap-on .reveal { transition: none !important; }
+.gsap-on .hero-media { height: 120%; top: -10%; }
+.gsap-open .opening-inner { animation: none; }
