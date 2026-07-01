@@ -3,16 +3,16 @@
 const weddingConfig = {
   coupleNames: 'Omar & Rewan',
   weddingDateText: '08 · 08 · 2026',
-  start: new Date('2026-08-08T19:00:00+03:00'),
-  end: new Date('2026-08-08T23:00:00+03:00'),
-  startLocal: '20260808T190000',
-  endLocal: '20260808T230000',
+  start: new Date('2026-08-08T18:00:00+03:00'),
+  end: new Date('2026-08-08T21:00:00+03:00'),
+  startLocal: '20260808T180000',
+  endLocal: '20260808T210000',
   venueName: 'Swiss Club Cairo',
   venueAddress: 'Swiss Club Cairo, Cairo, Egypt',
   venueMapsUrl: 'https://maps.app.goo.gl/iwaNAY48Krx1mPwG9?g_st=ic',
   rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbyzceubK37TDNa0K3uyqr9bHAb6DfD_noG1GxkT87IvKPUmIUvzAKuVoGYNaqEc1D4BiA/exec',
   rsvpStorageKey: 'omar_rewan_rsvps',
-};
+};s
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
