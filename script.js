@@ -12,7 +12,7 @@ const weddingConfig = {
   venueMapsUrl: 'https://maps.app.goo.gl/iwaNAY48Krx1mPwG9?g_st=ic',
   rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbyzceubK37TDNa0K3uyqr9bHAb6DfD_noG1GxkT87IvKPUmIUvzAKuVoGYNaqEc1D4BiA/exec',
   rsvpStorageKey: 'omar_rewan_rsvps',
-};s
+};
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
