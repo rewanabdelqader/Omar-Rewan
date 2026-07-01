@@ -1440,8 +1440,9 @@ html, body { margin: 0; padding: 0; }
   .hero-scroll { bottom: max(70px, calc(env(safe-area-inset-bottom) + 56px)); }
 }
 
-/* insurance: if any edge sliver shows, it reads as the photo's dark tone, never cream */
-.hero { background-color: #241b14; }
+/* insurance: if any edge sliver shows, it reads as the photo's dark tone, never cream.
+   isolation:isolate keeps the negative-z hero image ABOVE this background, not hidden by it. */
+.hero { background-color: #241b14; isolation: isolate; }
 
 /* ============================================================
    EDITORIAL LUXURY LAYER (final) — added last, wins cascade
