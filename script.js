@@ -10,7 +10,6 @@ const weddingConfig = {
   venueName: 'Swiss Club Cairo',
   venueAddress: 'Swiss Club Cairo, Cairo, Egypt',
   venueMapsUrl: 'https://maps.app.goo.gl/iwaNAY48Krx1mPwG9?g_st=ic',
-  // Google Apps Script web-app URL that saves RSVPs into your Google Sheet.
   rsvpEndpoint: 'https://script.google.com/macros/s/AKfycbyzceubK37TDNa0K3uyqr9bHAb6DfD_noG1GxkT87IvKPUmIUvzAKuVoGYNaqEc1D4BiA/exec',
   rsvpStorageKey: 'omar_rewan_rsvps',
 };
@@ -28,7 +27,6 @@ function buildGoogleCalendarUrl() {
     `Venue: ${weddingConfig.venueName}`,
     `Map: ${weddingConfig.venueMapsUrl}`,
   ].join('\n');
-
   const params = new URLSearchParams({
     action: 'TEMPLATE',
     text: `${weddingConfig.coupleNames} Wedding`,
@@ -37,63 +35,49 @@ function buildGoogleCalendarUrl() {
     details,
     ctz: 'Africa/Cairo',
   });
-
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
 
 function buildIcsFile() {
   const stamp = toIcsStamp(new Date());
   const start = toIcsStamp(weddingConfig.start);
-  const end = toIcsStamp(weddingConfig.end);
-  const uid = `omar-rewan-${Date.now()}@wedding-invitation`;
+  const end   = toIcsStamp(weddingConfig.end);
+  const uid   = `omar-rewan-${Date.now()}@wedding-invitation`;
   const lines = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//Omar and Rewan Wedding//EN',
-    'CALSCALE:GREGORIAN',
-    'METHOD:PUBLISH',
-    'BEGIN:VEVENT',
-    `UID:${uid}`,
-    `DTSTAMP:${stamp}`,
-    `DTSTART:${start}`,
-    `DTEND:${end}`,
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Omar and Rewan Wedding//EN',
+    'CALSCALE:GREGORIAN','METHOD:PUBLISH','BEGIN:VEVENT',
+    `UID:${uid}`,`DTSTAMP:${stamp}`,`DTSTART:${start}`,`DTEND:${end}`,
     `SUMMARY:${weddingConfig.coupleNames} Wedding`,
     `LOCATION:${weddingConfig.venueAddress}`,
     `DESCRIPTION:Venue: ${weddingConfig.venueName}\\nMap: ${weddingConfig.venueMapsUrl}`,
-    'END:VEVENT',
-    'END:VCALENDAR',
+    'END:VEVENT','END:VCALENDAR',
   ];
   return new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
 }
 
 function toIcsStamp(date) {
-  const year = date.getUTCFullYear();
-  const month = formatTwoDigits(date.getUTCMonth() + 1);
-  const day = formatTwoDigits(date.getUTCDate());
-  const hours = formatTwoDigits(date.getUTCHours());
-  const minutes = formatTwoDigits(date.getUTCMinutes());
-  const seconds = formatTwoDigits(date.getUTCSeconds());
-  return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
+  return [
+    date.getUTCFullYear(),
+    formatTwoDigits(date.getUTCMonth() + 1),
+    formatTwoDigits(date.getUTCDate()),
+    'T',
+    formatTwoDigits(date.getUTCHours()),
+    formatTwoDigits(date.getUTCMinutes()),
+    formatTwoDigits(date.getUTCSeconds()),
+    'Z',
+  ].join('');
 }
 
 function initStaticContent() {
-  // #coupleNames is now a styled heading with its own markup — leave its DOM alone.
-  $('#weddingDateLabel').textContent = weddingConfig.weddingDateText;
-  const eventDateCard = $('#eventDateCard');
-  if (eventDateCard) eventDateCard.textContent = '8.8.2026';
-  const venueCard = $('#venueCard');
-  if (venueCard) venueCard.textContent = weddingConfig.venueName;
-  const footerDate = $('#footerDate');
-  if (footerDate) footerDate.textContent = '08 · 08 · 2026';
+  const wdl = $('#weddingDateLabel');
+  if (wdl) wdl.textContent = weddingConfig.weddingDateText;
+  const fd = $('#footerDate');
+  if (fd) fd.textContent = '08 · 08 · 2026';
 
   const googleLink = $('#googleCalendarLink');
-  if (googleLink) {
-    googleLink.href = buildGoogleCalendarUrl();
-  }
+  if (googleLink) googleLink.href = buildGoogleCalendarUrl();
 
-  const icsBlob = buildIcsFile();
-  const icsUrl = URL.createObjectURL(icsBlob);
-
+  const icsUrl = URL.createObjectURL(buildIcsFile());
   const appleLink = $('#appleCalendarLink');
   const outlookLink = $('#outlookCalendarLink');
   if (appleLink) appleLink.href = icsUrl;
@@ -106,34 +90,24 @@ function initStaticContent() {
 function createPetals() {
   const container = $('#petals');
   if (!container) return;
-
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reducedMotion) return;
-
-  const count = 18;
-  for (let index = 0; index < count; index += 1) {
-    const petal = document.createElement('span');
-    petal.className = 'petal';
-    const left = Math.random() * 100;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('span');
+    p.className = 'petal';
     const size = 8 + Math.random() * 10;
-    const delay = Math.random() * 10;
-    const duration = 14 + Math.random() * 10;
-    petal.style.left = `${left}%`;
-    petal.style.top = `${-10 - Math.random() * 30}vh`;
-    petal.style.width = `${size}px`;
-    petal.style.height = `${size * 0.85}px`;
-    petal.style.animationDuration = `${duration}s`;
-    petal.style.animationDelay = `${delay}s`;
-    petal.style.opacity = '0';
-    petal.style.transform = `rotate(${Math.random() * 180}deg)`;
-    container.appendChild(petal);
+    p.style.cssText = `left:${Math.random()*100}%;top:${-10-Math.random()*30}vh;width:${size}px;height:${size*.85}px;animation-duration:${14+Math.random()*10}s;animation-delay:${Math.random()*10}s;opacity:0;transform:rotate(${Math.random()*180}deg)`;
+    container.appendChild(p);
   }
+}
+
+// ─── GSAP helpers ────────────────────────────────────────────
+function hasGsap() {
+  return typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
 }
 
 function initRevealAnimations() {
   const items = $$('.reveal');
   if (!items.length) return;
-
   const groups = new Map();
   items.forEach((item) => {
     const parent = item.parentElement;
@@ -142,170 +116,204 @@ function initRevealAnimations() {
     list.push(item);
     groups.set(parent, list);
   });
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.14, rootMargin: '0px 0px -8% 0px' }
-  );
-
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); }
+    });
+  }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
   items.forEach((item) => observer.observe(item));
-}
-
-// --- Motion: GSAP cinematic reveals + parallax, with graceful fallback -------
-function hasGsap() {
-  return typeof window.gsap !== 'undefined' && typeof window.ScrollTrigger !== 'undefined';
 }
 
 function initMotion() {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (!hasGsap()) {
-    initRevealAnimations();
-    return;
-  }
+  if (!hasGsap()) { initRevealAnimations(); return; }
 
   gsap.registerPlugin(ScrollTrigger);
   document.documentElement.classList.add('gsap-on');
 
-  // Hero content is handled by the opening sequence — reveal everything else here.
-  const items = $$('.reveal').filter((el) => !el.closest('.hero'));
-
-  items.forEach((el) => {
+  $$('.reveal').filter((el) => !el.closest('.hero')).forEach((el) => {
     const markVisible = () => el.classList.add('is-visible');
-
-    if (reduce) {
-      gsap.set(el, { opacity: 1, y: 0 });
-      markVisible();
-      return;
-    }
-
+    if (reduce) { gsap.set(el, { opacity:1, y:0 }); markVisible(); return; }
     const siblings = Array.from(el.parentElement.children).filter((c) => c.classList.contains('reveal'));
     const idx = siblings.indexOf(el);
-
-    gsap.set(el, { opacity: 0, y: 30 });
+    gsap.set(el, { opacity:0, y:30 });
     ScrollTrigger.create({
-      trigger: el,
-      start: 'top 88%',
-      once: true,
-      onEnter: () => {
-        markVisible();
-        gsap.to(el, {
-          opacity: 1,
-          y: 0,
-          duration: 1.1,
-          delay: idx * 0.08,
-          ease: 'power3.out',
-        });
-      },
+      trigger: el, start: 'top 88%', once: true,
+      onEnter: () => { markVisible(); gsap.to(el, { opacity:1, y:0, duration:1.1, delay:idx*0.08, ease:'power3.out' }); },
     });
   });
 
-  // Cinematic parallax + slow zoom on the hero photo (gap-proof: generous scale).
   if (!reduce) {
-    gsap.set('.hero-media img', { scale: 1.22, transformOrigin: '50% 50%' });
+    gsap.set('.hero-media img', { scale:1.22, transformOrigin:'50% 50%' });
+    gsap.to('.hero-media img', { scale:1.3, duration:24, ease:'sine.inOut', yoyo:true, repeat:-1 });
     gsap.to('.hero-media img', {
-      scale: 1.3, duration: 24, ease: 'sine.inOut', yoyo: true, repeat: -1,
-    });
-    gsap.to('.hero-media img', {
-      yPercent: 8,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 0.6,
-      },
+      yPercent:8, ease:'none',
+      scrollTrigger: { trigger:'.hero', start:'top top', end:'bottom top', scrub:0.6 },
     });
   }
-
   window.addEventListener('load', () => ScrollTrigger.refresh());
 }
 
-// Play a refined entrance for the hero once the invitation is opened.
 function playHeroEntrance() {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const heroItems = $$('.hero .reveal');
   if (!heroItems.length) return;
-
-  if (!hasGsap() || reduce) {
-    heroItems.forEach((el) => el.classList.add('is-visible'));
-    return;
-  }
-
-  gsap.fromTo(
-    heroItems,
-    { opacity: 0, y: 34 },
-    { opacity: 1, y: 0, duration: 1.2, stagger: 0.14, ease: 'power3.out', delay: 0.25 }
-  );
+  if (!hasGsap() || reduce) { heroItems.forEach((el) => el.classList.add('is-visible')); return; }
+  gsap.fromTo(heroItems, { opacity:0, y:34 }, { opacity:1, y:0, duration:1.2, stagger:0.14, ease:'power3.out', delay:0.25 });
 }
 
+// ─── Countdown ────────────────────────────────────────────────
 function initCountdown() {
-  const days = $('#days');
-  const hours = $('#hours');
-  const minutes = $('#minutes');
-  const seconds = $('#seconds');
+  const days = $('#days'), hours = $('#hours'), minutes = $('#minutes'), seconds = $('#seconds');
   const target = weddingConfig.start.getTime();
-
   const setDigit = (el, value) => {
     if (!el) return;
     const next = formatTwoDigits(value);
     if (el.textContent === next) return;
     el.textContent = next;
     el.classList.remove('is-rolling');
-    // force reflow so the animation can replay
     void el.offsetWidth;
     el.classList.add('is-rolling');
   };
-
   const tick = () => {
-    const delta = target - Date.now();
-    const distance = Math.max(0, delta);
-
-    const remainingDays = Math.floor(distance / 86400000);
-    const remainingHours = Math.floor((distance % 86400000) / 3600000);
-    const remainingMinutes = Math.floor((distance % 3600000) / 60000);
-    const remainingSeconds = Math.floor((distance % 60000) / 1000);
-
-    setDigit(days, remainingDays);
-    setDigit(hours, remainingHours);
-    setDigit(minutes, remainingMinutes);
-    setDigit(seconds, remainingSeconds);
+    const distance = Math.max(0, target - Date.now());
+    setDigit(days,    Math.floor(distance / 86400000));
+    setDigit(hours,   Math.floor((distance % 86400000) / 3600000));
+    setDigit(minutes, Math.floor((distance % 3600000) / 60000));
+    setDigit(seconds, Math.floor((distance % 60000) / 1000));
   };
-
   tick();
   setInterval(tick, 1000);
 }
 
-function getStoredRsvps() {
-  try {
-    const raw = localStorage.getItem(weddingConfig.rsvpStorageKey);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
+// ─── Invitation card generator ────────────────────────────────
+function sanitizeName(name) {
+  return (name || 'Guest').replace(/[<>"&]/g, '').trim().slice(0, 60) || 'Guest';
 }
 
-function saveStoredRsvp(entry) {
-  const current = getStoredRsvps();
-  current.unshift(entry);
-  try {
-    localStorage.setItem(weddingConfig.rsvpStorageKey, JSON.stringify(current));
-  } catch {
-    // Some browsers block storage in private or restricted modes.
-  }
-  return current;
+function generateInvitationCard(guestName, guestCount) {
+  const W = 1400, H = 840;
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return null;
+
+  // background warm ivory gradient
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, '#f4eeE4'); bg.addColorStop(1, '#ece4d5');
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+  // soft radial glow top-left
+  const gl = ctx.createRadialGradient(W*0.3, H*0.2, 0, W*0.3, H*0.2, W*0.65);
+  gl.addColorStop(0, 'rgba(255,251,244,0.7)'); gl.addColorStop(1, 'rgba(255,251,244,0)');
+  ctx.fillStyle = gl; ctx.fillRect(0, 0, W, H);
+
+  // white card with gold border
+  const CX=68, CY=56, CW=W-136, CH=H-112, CR=34;
+  ctx.save();
+  ctx.beginPath(); ctx.roundRect(CX, CY, CW, CH, CR);
+  ctx.fillStyle = '#fffdfa'; ctx.fill();
+  ctx.strokeStyle = '#c79a5c'; ctx.lineWidth = 2; ctx.stroke();
+  ctx.restore();
+
+  // OR watermark inside card top-right
+  ctx.save();
+  ctx.globalAlpha = 0.055; ctx.fillStyle = '#c79a5c';
+  ctx.font = 'italic 240px "Cormorant Garamond","Playfair Display",Georgia,serif';
+  ctx.fillText('OR', CX + CW - 295, CY + 222);
+  ctx.restore();
+
+  // "YOUR INVITATION" kicker
+  ctx.fillStyle = '#c79a5c';
+  ctx.font = '600 17px "Inter",Arial,sans-serif';
+  ctx.letterSpacing = '0.22em';
+  ctx.fillText('YOUR INVITATION', CX + 46, CY + 50);
+  ctx.letterSpacing = '0';
+
+  // Couple names
+  ctx.fillStyle = '#2b2320';
+  ctx.font = 'italic 78px "Cormorant Garamond","Playfair Display",Georgia,serif';
+  ctx.fillText('Omar & Rewan', CX + 46, CY + 138);
+
+  // thin gold rule
+  ctx.strokeStyle = '#d6be94'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(CX+46, CY+156); ctx.lineTo(CX+500, CY+156); ctx.stroke();
+
+  // 4 data rows
+  const ROW_X = CX+46, ROW_W = CW-92, ROW_H = 78, ROW_GAP = 90, ROW_START = CY+170;
+  const rows = [
+    { label: 'GUEST NAME', value: sanitizeName(guestName), italic: true },
+    { label: 'EVENT DATE & TIME', value: 'Saturday 8 August 2026  \u00B7  07:00 PM', italic: false },
+    { label: 'VENUE', value: 'Swiss Club Cairo', italic: false },
+    { label: 'PARKING', value: 'Free parking inside the club', italic: false },
+  ];
+  rows.forEach((row, i) => {
+    const ry = ROW_START + i * ROW_GAP;
+    ctx.save(); ctx.beginPath(); ctx.roundRect(ROW_X, ry, ROW_W, ROW_H, 16);
+    ctx.fillStyle = '#f6f1e7'; ctx.fill(); ctx.restore();
+    ctx.fillStyle = '#8c7864';
+    ctx.font = '600 15px "Inter",Arial,sans-serif';
+    ctx.letterSpacing = '0.18em';
+    ctx.fillText(row.label, ROW_X + 22, ry + 24);
+    ctx.letterSpacing = '0';
+    ctx.fillStyle = row.italic ? '#c79a5c' : '#2b2320';
+    ctx.font = row.italic
+      ? 'italic 46px "Cormorant Garamond","Playfair Display",Georgia,serif'
+      : '400 40px "Cormorant Garamond","Playfair Display",Georgia,serif';
+    ctx.fillText(row.value, ROW_X + 290, ry + 58);
+  });
+
+  // footer
+  ctx.strokeStyle = '#d6be94'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(CX+46, CY+CH-52); ctx.lineTo(CX+CW-46, CY+CH-52); ctx.stroke();
+  ctx.fillStyle = '#8c7864';
+  ctx.font = '400 16px "Inter",Arial,sans-serif';
+  ctx.fillText('omar-rewan.vercel.app', CX + 46, CY + CH - 22);
+  ctx.fillStyle = '#c79a5c';
+  ctx.font = '600 16px "Inter",Arial,sans-serif';
+  ctx.letterSpacing = '0.12em';
+  ctx.fillText('08  \u00B7  08  \u00B7  2026', CX + CW - 200, CY + CH - 22);
+  ctx.letterSpacing = '0';
+
+  return canvas;
 }
 
+
+function roundRectFill(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function downloadInvitationCard(guestName, guestCount) {
+  return new Promise((resolve) => {
+    const canvas = generateInvitationCard(guestName, guestCount);
+    if (!canvas) { resolve(false); return; }
+    const safe = sanitizeName(guestName).replace(/\s+/g, '_');
+    canvas.toBlob((blob) => {
+      if (!blob) { resolve(false); return; }
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.download = `Omar_Rewan_Invitation_${safe}.png`;
+      a.href = url;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 3000);
+      resolve(true);
+    }, 'image/png');
+  });
+}
+
+// ─── RSVP form ────────────────────────────────────────────────
 function buildRsvpPayload(form) {
   const attendance = form.querySelector('input[name="attendance"]:checked')?.value || 'Attending';
-
   return {
     fullName: $('#fullName', form).value.trim(),
     phoneNumber: $('#phoneNumber', form).value.trim(),
@@ -318,48 +326,46 @@ function buildRsvpPayload(form) {
   };
 }
 
+function getStoredRsvps() {
+  try { const raw = localStorage.getItem(weddingConfig.rsvpStorageKey); return raw ? JSON.parse(raw) : []; }
+  catch { return []; }
+}
+
+function saveStoredRsvp(entry) {
+  const current = getStoredRsvps();
+  current.unshift(entry);
+  try { localStorage.setItem(weddingConfig.rsvpStorageKey, JSON.stringify(current)); } catch {}
+}
+
 async function submitRsvpToEndpoint(payload) {
   if (!weddingConfig.rsvpEndpoint) return { skipped: true };
-
-  // Google Apps Script web apps don't return CORS headers, so we send a
-  // "simple" request (text/plain, no-cors). The row still lands in the sheet;
-  // the response is opaque, which is fine — we also keep a local backup.
   await fetch(weddingConfig.rsvpEndpoint, {
-    method: 'POST',
-    mode: 'no-cors',
+    method: 'POST', mode: 'no-cors',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(payload),
   });
-
   return { ok: true };
 }
 
 function initRsvpForm() {
-  const form = $('#rsvpForm');
-  const status = $('#rsvpStatus');
+  const form         = $('#rsvpForm');
+  const status       = $('#rsvpStatus');
   const submitButton = $('#submitRsvp');
-  const bringingChildren = $('#bringingChildren');
-  const childrenCountField = $('#childrenCountField');
-  const childrenCountInput = $('#childrenCount');
-
+  const bringingChildren    = $('#bringingChildren');
+  const childrenCountField  = $('#childrenCountField');
+  const childrenCountInput  = $('#childrenCount');
   if (!form || !status || !submitButton) return;
 
   const syncChildrenCountState = () => {
-    const showCount = bringingChildren?.value === 'Yes';
-    if (childrenCountField) {
-      childrenCountField.style.display = showCount ? 'grid' : 'none';
-    }
-    if (!showCount && childrenCountInput) {
-      childrenCountInput.value = '0';
-    }
+    const show = bringingChildren?.value === 'Yes';
+    if (childrenCountField) childrenCountField.style.display = show ? 'grid' : 'none';
+    if (!show && childrenCountInput) childrenCountInput.value = '0';
   };
-
   bringingChildren?.addEventListener('change', syncChildrenCountState);
   syncChildrenCountState();
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
-
     const payload = buildRsvpPayload(form);
     if (!payload.fullName) {
       status.textContent = 'Please add your full name before sending.';
@@ -369,42 +375,52 @@ function initRsvpForm() {
     }
 
     submitButton.disabled = true;
-    submitButton.textContent = 'Sending...';
-    status.textContent = 'Saving your response...';
+    submitButton.textContent = 'Sending…';
+    status.textContent = 'Saving your response…';
     status.style.color = '#8f6650';
-
     saveStoredRsvp(payload);
 
     try {
       await submitRsvpToEndpoint(payload);
-      status.textContent = 'Your place has been reserved. We cannot wait to celebrate with you — Omar & Rewan';
       status.style.color = '#667c62';
+
+      if (payload.attendance === 'Attending') {
+        status.textContent = 'Your place has been reserved! Preparing your invitation card…';
+        submitButton.textContent = 'Preparing card…';
+        await downloadInvitationCard(payload.fullName, payload.guestCount);
+        status.textContent = `Your place is reserved, ${payload.fullName.split(' ')[0]}! Your personal invitation card has been saved to your device 🤍`;
+      } else {
+        status.textContent = 'Your response has been received. You will be missed dearly.';
+      }
+
       form.reset();
       $('#guestCount', form).value = '1';
       $('input[name="attendance"][value="Attending"]', form).checked = true;
       syncChildrenCountState();
-    } catch (error) {
-      console.warn('RSVP endpoint unavailable, stored locally instead.', error);
-      status.textContent = "Your place has been reserved. If you don't hear back, feel free to message us directly too.";
-      status.style.color = '#667c62';
+    } catch (err) {
+      console.warn('RSVP error:', err);
+      status.textContent = "Saved locally. If you don't hear back, message us directly.";
+      status.style.color = '#8f6650';
+      if (payload.attendance === 'Attending') {
+        await downloadInvitationCard(payload.fullName, payload.guestCount);
+      }
       form.reset();
       $('#guestCount', form).value = '1';
       $('input[name="attendance"][value="Attending"]', form).checked = true;
       syncChildrenCountState();
     } finally {
       submitButton.disabled = false;
-      submitButton.textContent = 'Send RSVP';
+      submitButton.textContent = 'Reserve your place';
     }
   });
 }
 
-// --- Opening unveil: the "open the evening" moment ---------------------------
+// ─── Opening screen ───────────────────────────────────────────
 function initOpening() {
   const opening = $('#opening');
   if (!opening) return;
   const openBtn = $('#openBtn');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
   document.body.classList.add('is-locked');
 
   const reveal = () => {
@@ -419,21 +435,19 @@ function initOpening() {
   openBtn?.addEventListener('click', reveal);
   opening.addEventListener('click', (e) => { if (e.target === opening) reveal(); });
 
-  // Sequential entrance for the invitation, inspired by the original splash.
   if (hasGsap() && !reduce) {
     document.documentElement.classList.add('gsap-open');
     gsap.timeline({ defaults: { ease: 'power3.out' } })
-      .from('.opening-monogram', { opacity: 0, y: 22, duration: 1.1, delay: 0.3 })
-      .from('.opening-names', { opacity: 0, y: 16, duration: 0.9 }, '-=0.55')
-      .from('.opening-lines', { opacity: 0, y: 18, duration: 1.0 }, '-=0.45')
-      .from('.opening-meta', { opacity: 0, y: 14, duration: 0.9 }, '-=0.5')
-      .from('.opening-btn', { opacity: 0, y: 14, duration: 0.9 }, '-=0.45');
+      .from('.opening-monogram', { opacity:0, y:22, duration:1.1, delay:0.3 })
+      .from('.opening-names',    { opacity:0, y:16, duration:0.9 }, '-=0.55')
+      .from('.opening-lines',    { opacity:0, y:18, duration:1.0 }, '-=0.45')
+      .from('.opening-meta',     { opacity:0, y:14, duration:0.9 }, '-=0.5')
+      .from('.opening-btn',      { opacity:0, y:14, duration:0.9 }, '-=0.45');
   }
-
   if (reduce) reveal();
 }
 
-// --- Atmosphere: scroll progress + the evening turning to gold ---------------
+// ─── Atmosphere ───────────────────────────────────────────────
 function initAtmosphere() {
   const root = document.documentElement;
   const progress = $('#scrollProgress');
@@ -441,14 +455,13 @@ function initAtmosphere() {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (lights && !reduce) {
-    const count = 28;
-    for (let i = 0; i < count; i += 1) {
+    for (let i = 0; i < 28; i++) {
       const dot = document.createElement('span');
       dot.className = 'glight';
-      dot.style.left = `${Math.random() * 100}%`;
-      dot.style.top = `${8 + Math.random() * 86}%`;
-      dot.style.setProperty('--d', `${(Math.random() * 3).toFixed(2)}s`);
-      dot.style.setProperty('--s', (0.55 + Math.random() * 0.95).toFixed(2));
+      dot.style.left = `${Math.random()*100}%`;
+      dot.style.top  = `${8+Math.random()*86}%`;
+      dot.style.setProperty('--d', `${(Math.random()*3).toFixed(2)}s`);
+      dot.style.setProperty('--s', (0.55+Math.random()*0.95).toFixed(2));
       lights.appendChild(dot);
     }
   }
@@ -462,61 +475,43 @@ function initAtmosphere() {
     document.body.classList.toggle('is-dusk', p > 0.6);
     ticking = false;
   };
-  const onScroll = () => {
-    if (!ticking) {
-      ticking = true;
-      window.requestAnimationFrame(update);
-    }
-  };
+  const onScroll = () => { if (!ticking) { ticking = true; window.requestAnimationFrame(update); } };
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   update();
 }
 
-// --- Scroll-spy side navigation ----------------------------------------------
+// ─── Scroll spy ───────────────────────────────────────────────
 function initScrollSpy() {
   const links = $$('.spy a');
   if (!links.length) return;
   const map = new Map(links.map((a) => [a.dataset.spy, a]));
-  const sections = links
-    .map((a) => document.getElementById(a.dataset.spy))
-    .filter(Boolean);
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          links.forEach((a) => a.classList.remove('is-active'));
-          map.get(entry.target.id)?.classList.add('is-active');
-        }
-      });
-    },
-    { threshold: 0, rootMargin: '-45% 0px -45% 0px' }
-  );
+  const sections = links.map((a) => document.getElementById(a.dataset.spy)).filter(Boolean);
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        links.forEach((a) => a.classList.remove('is-active'));
+        map.get(entry.target.id)?.classList.add('is-active');
+      }
+    });
+  }, { threshold:0, rootMargin:'-45% 0px -45% 0px' });
   sections.forEach((s) => observer.observe(s));
 }
 
-// --- Photo lightbox ----------------------------------------------------------
+// ─── Lightbox ─────────────────────────────────────────────────
 function initLightbox() {
-  const box = $('#lightbox');
-  const img = $('#lightboxImg');
-  const closeBtn = $('#lightboxClose');
+  const box = $('#lightbox'), img = $('#lightboxImg'), closeBtn = $('#lightboxClose');
   if (!box || !img) return;
-
   const open = (src, alt) => {
-    img.src = src;
-    img.alt = alt || '';
-    box.classList.add('is-open');
-    box.setAttribute('aria-hidden', 'false');
+    img.src = src; img.alt = alt || '';
+    box.classList.add('is-open'); box.setAttribute('aria-hidden','false');
     document.body.classList.add('is-locked');
   };
   const close = () => {
-    box.classList.remove('is-open');
-    box.setAttribute('aria-hidden', 'true');
+    box.classList.remove('is-open'); box.setAttribute('aria-hidden','true');
     document.body.classList.remove('is-locked');
   };
-
-  $$('.venue-photo img, .kids-photo img, .story-image img').forEach((t) => {
+  $$('.venue-photo img,.kids-photo img,.story-image img').forEach((t) => {
     t.style.cursor = 'zoom-in';
     t.addEventListener('click', () => open(t.currentSrc || t.src, t.alt));
   });
@@ -525,63 +520,36 @@ function initLightbox() {
   window.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
 }
 
-// --- Subtle micro-interactions (desktop, motion allowed) ---------------------
+// ─── Micro interactions ───────────────────────────────────────
 function initMicroInteractions() {
   const fine = window.matchMedia('(pointer: fine)').matches;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!fine || reduce) return;
-
   $$('.button').forEach((btn) => {
     btn.addEventListener('pointermove', (e) => {
       const r = btn.getBoundingClientRect();
-      const mx = e.clientX - (r.left + r.width / 2);
-      const my = e.clientY - (r.top + r.height / 2);
-      btn.style.transform = `translate(${mx * 0.16}px, ${my * 0.2}px)`;
+      btn.style.transform = `translate(${(e.clientX-(r.left+r.width/2))*0.16}px,${(e.clientY-(r.top+r.height/2))*0.2}px)`;
     });
     btn.addEventListener('pointerleave', () => { btn.style.transform = ''; });
   });
-
-  $$('.detail-card, .calendar-card, .intro-card').forEach((card) => {
-    card.addEventListener('pointermove', (e) => {
-      const r = card.getBoundingClientRect();
-      const px = (e.clientX - r.left) / r.width - 0.5;
-      const py = (e.clientY - r.top) / r.height - 0.5;
-      card.style.transform = `perspective(720px) rotateX(${-py * 4}deg) rotateY(${px * 5}deg) translateY(-2px)`;
-    });
-    card.addEventListener('pointerleave', () => { card.style.transform = ''; });
-  });
 }
 
-// --- Optional ambient music (off by default, user-activated) -----------------
+// ─── Optional music ───────────────────────────────────────────
 function initMusic() {
-  const btn = $('#musicToggle');
-  const audio = $('#bgMusic');
+  const btn = $('#musicToggle'), audio = $('#bgMusic');
   if (!btn || !audio) return;
-
-  // Only reveal the control if a music file actually exists.
-  fetch('Media/music.mp3', { method: 'HEAD' })
-    .then((r) => { if (r.ok) btn.hidden = false; })
-    .catch(() => {});
-
+  fetch('Media/music.mp3', { method: 'HEAD' }).then((r) => { if (r.ok) btn.hidden = false; }).catch(() => {});
   let playing = false;
   btn.addEventListener('click', () => {
     if (playing) {
-      audio.pause();
-      btn.classList.remove('is-playing');
-      btn.setAttribute('aria-label', 'Play music');
-      playing = false;
+      audio.pause(); btn.classList.remove('is-playing'); btn.setAttribute('aria-label','Play music'); playing = false;
     } else {
-      audio.play()
-        .then(() => {
-          playing = true;
-          btn.classList.add('is-playing');
-          btn.setAttribute('aria-label', 'Pause music');
-        })
-        .catch(() => {});
+      audio.play().then(() => { playing = true; btn.classList.add('is-playing'); btn.setAttribute('aria-label','Pause music'); }).catch(() => {});
     }
   });
 }
 
+// ─── Bootstrap ────────────────────────────────────────────────
 function init() {
   initStaticContent();
   createPetals();
